@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://gigiti636.github.io/reportView",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -12,7 +13,9 @@
     "lint:fix": "eslint --ext .js,.cjs,.ts,.tsx . --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,js,jsx}\"",
     "format_check": "prettier --check \"src/**/*.{ts,tsx,json,js,jsx}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -26,6 +29,7 @@
     "@mui/x-date-pickers": "^7.1.0",
     "axios": "^1.6.7",
     "dayjs": "^1.11.8",
+    "gh-pages": "^6.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0",
