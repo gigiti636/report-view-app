@@ -59,7 +59,7 @@ export const FileParser = ({ onFileParsed }: FIleParserProps) => {
     <Box maxHeight={900} px={4} py={7}>
       <Box mt={10}>
         <FileInput
-          accept={'.xlsx, .csv'}
+          accept={'.xlsx'}
           maxMbSize={2}
           onFileSelected={handleParseFile}
           sx={{ maxWidth: '400px', mx: 'auto' }}

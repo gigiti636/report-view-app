@@ -13,9 +13,9 @@ export enum ViewModeType {
 /* eslint-enable */
 
 export const titleMapping: Record<ViewModeType, string> = {
-  [ViewModeType.FileParser]: 'Upload xlsx or csv file to begin!',
-  [ViewModeType.DataEditor]: 'Edit Data',
-  [ViewModeType.Report]: 'Report Page',
+  [ViewModeType.FileParser]: 'Upload xlsx file to begin!',
+  [ViewModeType.DataEditor]: 'Edit Data: finish editing to view reports',
+  [ViewModeType.Report]: 'Reports Page: save reports to create dashboards',
 };
 
 export function Main() {
