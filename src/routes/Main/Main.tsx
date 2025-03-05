@@ -3,8 +3,6 @@ import { useCallback, useMemo, useState } from 'react';
 import MainHeader from './MainHeader.tsx';
 import { FileParser, DataTableEditor, Dashboard } from '@/components';
 import { EditorProps, TransformedData } from '@/lib/types.ts';
-import { hasDraftStorage, getDraftStorage } from '@/lib/utils.ts';
-import { DRAFT_REPORT_KEY } from '@/lib/config.ts';
 
 /* eslint-disable */
 export enum ViewModeType {
@@ -22,14 +20,10 @@ export const titleMapping: Record<ViewModeType, string> = {
 
 export function Main() {
   const [data, setData] = useState<EditorProps | null>(null);
-  const [dataTransformed, setDataTransformed] = useState<TransformedData | null>(
-    getDraftStorage(DRAFT_REPORT_KEY) as TransformedData,
-  );
+  const [dataTransformed, setDataTransformed] = useState<TransformedData | null>(null);
 
   const viewMode = useMemo<ViewModeType>(() => {
-    if (hasDraftStorage(DRAFT_REPORT_KEY)) {
-      return ViewModeType.Report;
-    } else if (!data) {
+    if (!data) {
       return ViewModeType.FileParser;
     } else if (!dataTransformed) {
       return ViewModeType.DataEditor;
@@ -52,7 +46,6 @@ export function Main() {
         title={titleMapping[viewMode]}
         showPrevStep={viewMode !== ViewModeType.FileParser}
         goPrevious={handlerHeaderBack}
-        hasDraft={hasDraftStorage(DRAFT_REPORT_KEY)}
       />
 
       {viewMode === ViewModeType.FileParser && <FileParser onFileParsed={(data) => setData(data)} />}

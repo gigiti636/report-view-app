@@ -1,13 +1,12 @@
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 interface HeaderProps {
   title: string;
   showPrevStep: boolean;
   goPrevious: () => void;
-  hasDraft: boolean;
 }
-const MainHeader = ({ title, showPrevStep, goPrevious, hasDraft }: HeaderProps) => {
+const MainHeader = ({ title, showPrevStep, goPrevious }: HeaderProps) => {
   return (
     <Box
       sx={{ display: 'flex' }}
@@ -18,26 +17,14 @@ const MainHeader = ({ title, showPrevStep, goPrevious, hasDraft }: HeaderProps) 
       borderColor={'divider'}
       alignItems={'center'}
     >
-      {!hasDraft && showPrevStep && (
+      {showPrevStep && (
         <IconButton color={'inherit'} title={'Go to previous step'} onClick={goPrevious}>
           <ArrowBackIosIcon />
         </IconButton>
       )}
 
-      {hasDraft && (
-        <Button
-          variant={'outlined'}
-          onClick={() => {
-            localStorage.clear();
-            location.reload();
-          }}
-        >
-          Clear
-        </Button>
-      )}
-
       <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} textAlign={'left'}>
-        {hasDraft ? 'Edit Report' : title}
+        {title}
       </Typography>
     </Box>
   );

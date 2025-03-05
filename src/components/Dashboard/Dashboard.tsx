@@ -13,8 +13,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useCallback, useState } from 'react';
 import EditableText from '@/components/DataTableEditor/EditableText.tsx';
 import { darken } from '@mui/material/styles';
-import { deleteDraftStorage, hasDraftStorage, setDraftStorage, transformAndSplitDict } from '@/lib/utils.ts';
-import { DRAFT_REPORT_KEY } from '@/lib/config.ts';
+import { transformAndSplitDict } from '@/lib/utils.ts';
 
 import Chart from './Chart.tsx';
 import type { ReportColumn, TransformedData } from '@/lib/types.ts';
@@ -78,30 +77,6 @@ export const Dashboard = ({ transformedData }: ReportsProps) => {
           </Button>
           <Button onClick={() => bulkExpandedToggle('close')} disabled={reportData.every((r) => !r.open)}>
             Close All
-          </Button>
-        </Stack>
-        <Stack direction={'row'}>
-          {hasDraftStorage(DRAFT_REPORT_KEY) && (
-            <Button
-              color={'secondary'}
-              onClick={() => {
-                deleteDraftStorage(DRAFT_REPORT_KEY);
-                location.reload();
-              }}
-            >
-              Clear
-            </Button>
-          )}
-
-          <Button
-            variant={'contained'}
-            color={'secondary'}
-            title={`${
-              hasDraftStorage(DRAFT_REPORT_KEY) ? 'Update' : 'Save'
-            } Report and come back to finish it later`}
-            onClick={() => setDraftStorage(DRAFT_REPORT_KEY, reportData)}
-          >
-            {hasDraftStorage(DRAFT_REPORT_KEY) ? 'Update' : 'Save as'} Draft
           </Button>
         </Stack>
       </Box>
