@@ -2,7 +2,7 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { ScatterChart } from '@mui/x-charts/ScatterChart';
 import dayjs from 'dayjs';
 import { Button } from '@mui/material';
-import { isValidTimestamp } from '@/util';
+import { isValidTimestamp } from '@/lib/utils.ts';
 
 interface ChartProps {
   id: number;

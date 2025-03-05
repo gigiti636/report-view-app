@@ -115,7 +115,7 @@ const FileInput: FC<FileInputProps> = ({
         </Typography>
       ) : (
         <Typography variant={'subtitle1'} fontWeight={'bold'}>
-          Upload file
+          Click or drop file here for upload
         </Typography>
       )}
       <Box fontSize={'40px'}>

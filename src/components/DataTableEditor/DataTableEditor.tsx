@@ -7,15 +7,14 @@ import {
   useGridApiContext,
   useGridSelector,
 } from '@mui/x-data-grid';
-import type { Dispatch, SetStateAction } from 'react';
 import { Box, Button, Typography } from '@mui/material';
-import { CellDataRepetition, EditorProps, KeyTransformedData, TransformedData } from './models';
+import { CellDataRepetition, EditorProps, KeyTransformedData, TransformedData } from '@/lib/types.ts';
 
-interface DataEditor {
+interface DataTableEditorProps {
   data: EditorProps;
-  setTransformedData: Dispatch<SetStateAction<TransformedData>>;
+  setTransformedData: (_data: TransformedData) => void;
 }
-export const DataEditor = ({ data, setTransformedData }: DataEditor) => {
+export const DataTableEditor = ({ data, setTransformedData }: DataTableEditorProps) => {
   const ExtraColumnAction = (props: GridColumnMenuProps) => {
     return (
       <Box>
@@ -144,5 +143,3 @@ export const DataEditor = ({ data, setTransformedData }: DataEditor) => {
     </Box>
   );
 };
-
-export default DataEditor;

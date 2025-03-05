@@ -11,18 +11,19 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useCallback, useState } from 'react';
-import EditableText from '@/components/EditableText';
-import type { ReportColumn, TransformedData } from '@/App/models';
+import EditableText from '@/components/DataTableEditor/EditableText.tsx';
 import { darken } from '@mui/material/styles';
-import Chart from '@/App/EditReport/Chart';
-import { deleteDraftStorage, hasDraftStorage, setDraftStorage, transformAndSplitDict } from '@/util';
-import { DRAFT_REPORT_KEY } from '@/App/models';
+import { deleteDraftStorage, hasDraftStorage, setDraftStorage, transformAndSplitDict } from '@/lib/utils.ts';
+import { DRAFT_REPORT_KEY } from '@/lib/config.ts';
+
+import Chart from './Chart.tsx';
+import type { ReportColumn, TransformedData } from '@/lib/types.ts';
 
 interface ReportsProps {
   transformedData: TransformedData;
 }
 
-const EditReport = ({ transformedData }: ReportsProps) => {
+export const Dashboard = ({ transformedData }: ReportsProps) => {
   const [reportData, setReportData] = useState<ReportColumn[]>(
     Object.values(transformedData).map((col, index) => {
       return {
@@ -140,5 +141,3 @@ const EditReport = ({ transformedData }: ReportsProps) => {
     </Box>
   );
 };
-
-export default EditReport;

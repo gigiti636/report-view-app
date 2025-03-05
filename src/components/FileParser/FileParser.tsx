@@ -1,8 +1,8 @@
-import { Box, Typography } from '@mui/material';
-import FileInput from '@/components/FileInput';
+import { Box } from '@mui/material';
+import FileInput from '@/components/FileParser/FileInput.tsx';
 import { read, utils } from 'xlsx';
 import type { GridColDef } from '@mui/x-data-grid';
-import type { RowObject, EditorProps } from './models';
+import type { EditorProps, RowObject } from '@/lib/types.ts';
 
 interface FIleParserProps {
   onFileParsed: (_data: EditorProps) => void;
@@ -58,9 +58,6 @@ export const FileParser = ({ onFileParsed }: FIleParserProps) => {
   return (
     <Box maxHeight={900} px={4} py={7}>
       <Box mt={10}>
-        <Typography textAlign={'center'} mb={5} variant={'h6'}>
-          Upload file for Edit & Preview
-        </Typography>
         <FileInput
           accept={'.xlsx, .csv'}
           maxMbSize={2}

@@ -1,13 +1,26 @@
 import { Box } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
-import Header from '@/App/Header';
-import FileParser from './FileParser';
-import DataEditor from './DataEditor';
-import Index from './EditReport';
-import { EditorProps, titleMapping, TransformedData, ViewModeType, DRAFT_REPORT_KEY } from './models';
-import { hasDraftStorage, getDraftStorage } from '@/util';
+import MainHeader from './MainHeader.tsx';
+import { FileParser, DataTableEditor, Dashboard } from '@/components';
+import { EditorProps, TransformedData } from '@/lib/types.ts';
+import { hasDraftStorage, getDraftStorage } from '@/lib/utils.ts';
+import { DRAFT_REPORT_KEY } from '@/lib/config.ts';
 
-function App() {
+/* eslint-disable */
+export enum ViewModeType {
+  FileParser = 'file-parse',
+  DataEditor = 'data-edit',
+  Report = 'report-edit',
+}
+/* eslint-enable */
+
+export const titleMapping: Record<ViewModeType, string> = {
+  [ViewModeType.FileParser]: 'Upload xlsx or csv file to begin!',
+  [ViewModeType.DataEditor]: 'Edit Data',
+  [ViewModeType.Report]: 'Report Page',
+};
+
+export function Main() {
   const [data, setData] = useState<EditorProps | null>(null);
   const [dataTransformed, setDataTransformed] = useState<TransformedData | null>(
     getDraftStorage(DRAFT_REPORT_KEY) as TransformedData,
@@ -35,7 +48,7 @@ function App() {
 
   return (
     <Box height={'100%'} component={'main'}>
-      <Header
+      <MainHeader
         title={titleMapping[viewMode]}
         showPrevStep={viewMode !== ViewModeType.FileParser}
         goPrevious={handlerHeaderBack}
@@ -44,13 +57,14 @@ function App() {
 
       {viewMode === ViewModeType.FileParser && <FileParser onFileParsed={(data) => setData(data)} />}
 
-      {viewMode === ViewModeType.DataEditor && (
-        <DataEditor data={data} setTransformedData={(data: TransformedData) => setDataTransformed(data)} />
+      {viewMode === ViewModeType.DataEditor && data && (
+        <DataTableEditor
+          data={data}
+          setTransformedData={(data: TransformedData) => setDataTransformed(data)}
+        />
       )}
 
-      {dataTransformed && viewMode === ViewModeType.Report && <Index transformedData={dataTransformed} />}
+      {dataTransformed && viewMode === ViewModeType.Report && <Dashboard transformedData={dataTransformed} />}
     </Box>
   );
 }
-
-export default App;
