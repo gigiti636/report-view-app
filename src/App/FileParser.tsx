@@ -62,7 +62,7 @@ export const FileParser = ({ onFileParsed }: FIleParserProps) => {
           Upload file for Edit & Preview
         </Typography>
         <FileInput
-          accept={'.xlsx'}
+          accept={'.xlsx, .csv'}
           maxMbSize={2}
           onFileSelected={handleParseFile}
           sx={{ maxWidth: '400px', mx: 'auto' }}
