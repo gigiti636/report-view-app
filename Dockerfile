@@ -1,7 +1,5 @@
 FROM node:18.14.2-alpine
 
-# Check if Yarn is installed
-RUN yarn --version || npm install -g yarn@1.22.19
 
 # Set the working directory to /app inside the container
 WORKDIR /app
@@ -12,12 +10,12 @@ COPY . .
 # ==== BUILD =====
 
 # Install dependencies
-RUN yarn install -P
+RUN npm install
 
 ENV NODE_ENV production
 
 # Build the app
-RUN yarn run build
+RUN npm run build
 RUN rm -rf !dist
 
 EXPOSE 3030
