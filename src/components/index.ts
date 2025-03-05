@@ -1,5 +1,5 @@
 export * from './FileParser';
 export * from './DataTableEditor';
-export * from './Dashboard';
+export * from './Report';
 
 export * from './common';

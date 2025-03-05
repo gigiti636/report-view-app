@@ -22,7 +22,7 @@ interface ReportsProps {
   transformedData: TransformedData;
 }
 
-export const Dashboard = ({ transformedData }: ReportsProps) => {
+export const Report = ({ transformedData }: ReportsProps) => {
   const [reportData, setReportData] = useState<ReportColumn[]>(
     Object.values(transformedData).map((col, index) => {
       return {

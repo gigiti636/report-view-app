@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import MainHeader from './MainHeader.tsx';
-import { FileParser, DataTableEditor, Dashboard } from '@/components';
+import { FileParser, DataTableEditor, Report } from '@/components';
 import { EditorProps, TransformedData } from '@/lib/types.ts';
 
 /* eslint-disable */
@@ -57,7 +57,7 @@ export function Main() {
         />
       )}
 
-      {dataTransformed && viewMode === ViewModeType.Report && <Dashboard transformedData={dataTransformed} />}
+      {dataTransformed && viewMode === ViewModeType.Report && <Report transformedData={dataTransformed} />}
     </Box>
   );
 }
