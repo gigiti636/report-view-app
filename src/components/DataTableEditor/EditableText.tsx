@@ -57,7 +57,7 @@ const EditableText = ({ id, text, onSave }: EditableTextProps) => {
     <Typography
       component="div"
       display="flex"
-      alignItems={'center'}
+      alignItems={'left'}
       gap={1}
       onClick={handleEditClick}
       sx={{

@@ -97,7 +97,7 @@ export const DataTableEditor = ({ data, setTransformedData }: DataTableEditorPro
   };
 
   return (
-    <Box p={2} height={'92vh'} overflow={'auto'}>
+    <Box p={2} height={'85vh'} overflow={'auto'}>
       <DataGrid
         rows={data?.rows}
         columns={data?.cols.map((col) => ({
@@ -105,7 +105,7 @@ export const DataTableEditor = ({ data, setTransformedData }: DataTableEditorPro
           renderCell: (params) => {
             const is_empty = !params.value || String(params.value).trim().length === 0;
             return (
-              <Box bgcolor={is_empty ? 'warning.main' : 'inherit'} textAlign={'center'}>
+              <Box bgcolor={is_empty ? 'warning.main' : 'inherit'} textAlign={'left'}>
                 <Typography
                   sx={{
                     display: 'unset',

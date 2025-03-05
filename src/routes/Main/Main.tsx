@@ -47,7 +47,7 @@ export function Main() {
   }, [viewMode]);
 
   return (
-    <Box height={'100%'} component={'main'}>
+    <Box component={'main'}>
       <MainHeader
         title={titleMapping[viewMode]}
         showPrevStep={viewMode !== ViewModeType.FileParser}

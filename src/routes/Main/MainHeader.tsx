@@ -9,18 +9,19 @@ interface HeaderProps {
 }
 const MainHeader = ({ title, showPrevStep, goPrevious, hasDraft }: HeaderProps) => {
   return (
-    <Box sx={{ display: 'flex' }} pt={2} pb={1} borderBottom={1} borderColor={'divider'}>
+    <Box
+      sx={{ display: 'flex' }}
+      pt={2}
+      pb={1}
+      px={3}
+      borderBottom={1}
+      borderColor={'divider'}
+      alignItems={'center'}
+    >
       {!hasDraft && showPrevStep && (
-        <Box component={'span'} textAlign={'center'} minWidth={70}>
-          <Box onClick={goPrevious} component={'span'}>
-            <IconButton color={'inherit'} title={'Go to previous step'}>
-              <ArrowBackIosIcon />
-            </IconButton>
-            <Typography color={'white'} fontSize={'small'} sx={{ cursor: 'pointer' }}>
-              previous
-            </Typography>
-          </Box>
-        </Box>
+        <IconButton color={'inherit'} title={'Go to previous step'} onClick={goPrevious}>
+          <ArrowBackIosIcon />
+        </IconButton>
       )}
 
       {hasDraft && (
@@ -35,7 +36,7 @@ const MainHeader = ({ title, showPrevStep, goPrevious, hasDraft }: HeaderProps) 
         </Button>
       )}
 
-      <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} textAlign={'center'}>
+      <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} textAlign={'left'}>
         {hasDraft ? 'Edit Report' : title}
       </Typography>
     </Box>
