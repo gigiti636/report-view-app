@@ -1,3 +1,5 @@
 export { Header } from './Header.tsx';
-export { NotFound } from '../routes/NotFound.tsx';
+
 export { default as Modal } from '@/components/Modal/Modal.tsx';
+export { default as EditableText } from './EditableText.tsx';
+export { default as Chart } from './Chart.tsx';

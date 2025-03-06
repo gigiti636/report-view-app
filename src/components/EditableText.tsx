@@ -5,18 +5,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import { darken } from '@mui/material/styles';
 
 interface EditableTextProps {
-  id: number;
   text: string;
-  onSave: (_id: number, _text: string) => void;
+  onSave: (_text: string) => void;
 }
 
-const EditableText = ({ id, text, onSave }: EditableTextProps) => {
+const EditableText = ({ text, onSave }: EditableTextProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(text);
 
   const handleSaveClick = (e: SyntheticEvent) => {
     e.stopPropagation();
-    onSave(id, editText);
+    onSave(editText);
     setIsEditing(false);
   };
 
@@ -27,7 +26,7 @@ const EditableText = ({ id, text, onSave }: EditableTextProps) => {
 
   const handleKeyPress = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
-      onSave(id, editText);
+      onSave(editText);
       setIsEditing(false);
     }
   };

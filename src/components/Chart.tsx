@@ -2,37 +2,38 @@ import { useState } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { Tabs, Tab, Button, Box } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 
 interface ChartProps {
-  id: number;
   colData: Record<string, number>;
-  handleGroupID: (_id: number) => void;
+  defaultTab?: ChartType;
 }
 
-export default function Chart({ colData, id, handleGroupID }: ChartProps) {
-  const [activeTab, setActiveTab] = useState('bar');
+export type ChartType = 'bar' | 'pie' | 'donut' | 'line';
+
+export default function Chart({ colData, defaultTab }: ChartProps) {
+  const [activeTab, setActiveTab] = useState(defaultTab || 'bar');
 
   const labels = Object.keys(colData);
   const freq = Object.values(colData);
 
-  const data_can_be_grouped = labels.some((v) => v.includes(', '));
-
   return (
     <Box>
       {/* Tabs for selecting chart type */}
-      <Tabs
-        value={activeTab}
-        onChange={(_, newValue) => setActiveTab(newValue)}
-        variant="fullWidth"
-        textColor="primary"
-        indicatorColor="primary"
-      >
-        <Tab label="Bar Chart" value="bar" />
-        <Tab label="Pie Chart" value="pie" />
-        <Tab label="Donut Chart" value="donut" />
-        <Tab label="Line Chart" value="line" />
-      </Tabs>
+      {!defaultTab && (
+        <Tabs
+          value={activeTab}
+          onChange={(_, newValue) => setActiveTab(newValue)}
+          variant="fullWidth"
+          textColor="primary"
+          indicatorColor="primary"
+        >
+          <Tab label="Bar Chart" value="bar" />
+          <Tab label="Pie Chart" value="pie" />
+          <Tab label="Donut Chart" value="donut" />
+          <Tab label="Line Chart" value="line" />
+        </Tabs>
+      )}
 
       {/* Conditional rendering of charts based on active tab */}
       {activeTab === 'bar' && (
@@ -80,13 +81,6 @@ export default function Chart({ colData, id, handleGroupID }: ChartProps) {
           series={[{ data: freq, id: 'lineData' }]}
           xAxis={[{ data: labels, scaleType: 'point' }]}
         />
-      )}
-
-      {/* Group Data Button (Shown only if grouping is possible) */}
-      {data_can_be_grouped && (
-        <Button variant="contained" onClick={() => handleGroupID(id)} sx={{ mt: 2 }}>
-          Group Data
-        </Button>
       )}
     </Box>
   );

@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { FileDataType, ReportData } from '@/lib/types.ts';
 
-import MainHeader from './MainHeader.tsx';
+import { default as Header } from './CreateReportsHeader.tsx';
 import { FileParser } from './FileParser';
 import { DataTableEditor } from './DataTableEditor';
 import { ReportsPreview } from './ReportsPreview';
@@ -21,7 +21,7 @@ export const titleMapping: Record<ViewModeType, string> = {
   [ViewModeType.Report]: 'Reports Page: preview and save!',
 };
 
-export function Main() {
+export function CreateReports() {
   const [data, setData] = useState<FileDataType | null>(null);
   const [dataTransformed, setDataTransformed] = useState<ReportData | null>(null);
 
@@ -45,7 +45,7 @@ export function Main() {
 
   return (
     <Box component={'main'}>
-      <MainHeader
+      <Header
         title={titleMapping[viewMode]}
         showPrevStep={viewMode !== ViewModeType.FileParser}
         goPrevious={handlerHeaderBack}

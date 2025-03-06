@@ -1,5 +1,6 @@
 import { Box, Paper, Typography, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useReportStore } from '@/lib/reports.store.ts';
 import type { StoredReport } from '@/lib/types.ts';
 import { useState } from 'react';
@@ -8,6 +9,7 @@ import { Modal } from '@/components';
 export const ReportsPage = () => {
   const { reports, removeReport } = useReportStore();
   const [reportIdToDelete, setReportIdToDelete] = useState<string | null>(null);
+  const [reportIdToView, setReportIdToView] = useState<string | null>(null);
 
   const handleDiscardReport = () => {
     if (reportIdToDelete === null) return;
@@ -34,10 +36,20 @@ export const ReportsPage = () => {
               {reports.map((report: StoredReport) => (
                 <ListItem
                   key={report.id}
+                  divider={true}
                   secondaryAction={
-                    <IconButton edge="end" aria-label="delete" onClick={() => setReportIdToDelete(report.id)}>
-                      <DeleteIcon />
-                    </IconButton>
+                    <>
+                      <IconButton edge="end" aria-label="view" onClick={() => setReportIdToView(report.id)}>
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => setReportIdToDelete(report.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
                   }
                 >
                   <ListItemText primary={report.question} />
@@ -63,6 +75,25 @@ export const ReportsPage = () => {
           </Paper>
         </Box>
       </Box>
+
+      <Modal
+        header={'Inspect Report'}
+        open={Boolean(reportIdToView)}
+        onClose={() => setReportIdToView(null)}
+        closeModal={() => setReportIdToView(null)}
+        callToActionLabel={'Close'}
+        callToAction={() => setReportIdToView(null)}
+      >
+        {reports.find((report) => report.id === reportIdToView) && (
+          <pre>
+            {JSON.stringify(
+              reports.find((report) => report.id === reportIdToView),
+              null,
+              2,
+            )}
+          </pre>
+        )}
+      </Modal>
 
       <Modal
         header={'Delete Report'}

@@ -11,12 +11,11 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useCallback, useState } from 'react';
-import EditableText from '@/routes/Main/DataTableEditor/EditableText.tsx';
 import { darken } from '@mui/material/styles';
 import { transformAndSplitDict } from '@/lib/utils.ts';
-import { Modal } from '@/components';
+import { EditableText, Modal } from '@/components';
 
-import Chart from './Chart.tsx';
+import Chart from './ChartControl.tsx';
 import type { ReportColumn, ReportData, StoredReport } from '@/lib/types.ts';
 import { nanoid } from 'nanoid';
 import { useReportStore } from '@/lib/reports.store.ts';
@@ -102,6 +101,7 @@ export const ReportsPreview = ({ transformedData }: ReportsProps) => {
             Save All Reports
           </Button>
         </Box>
+
         {reportData.map((col, index) => (
           <Accordion
             key={index + '-' + col.values.question}
@@ -116,7 +116,7 @@ export const ReportsPreview = ({ transformedData }: ReportsProps) => {
               sx={{ background: (theme) => darken(theme.palette.background.paper, 0.028) }}
             >
               <Box display={'flex'} alignItems={'center'}>
-                <EditableText id={col.id} text={col.question} onSave={handleEditSave} />
+                <EditableText text={col.question} onSave={(text) => handleEditSave(col.id, text)} />
                 <IconButton
                   title={'Discard question'}
                   onClick={(e) => {
