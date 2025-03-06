@@ -1,45 +1,40 @@
-import { AppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
+import { AppBar, IconButton, Toolbar, Box } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import ThemeContext from '@/theme/context';
 import { routes } from '@/routes/AppRouter.tsx';
-import { useReportStore } from '@/stores/reports.store.ts';
+import { useReportStore } from '@/lib/reports.store.ts';
 
 export const Header = () => {
   const { toggleTheme, currentTheme } = useContext(ThemeContext);
-  const { reports } = useReportStore(); // ✅ Read number of reports from Zustand
+  const { reports } = useReportStore();
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ height: '68px!important' }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        {/* App Title */}
-        <Typography variant="h5" component="div" textAlign={'left'}>
-          Report View
-        </Typography>
-
         {/* Navigation Links */}
-        <Box sx={{ display: 'flex', gap: 3, flexGrow: 1, px: 2, justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', gap: 4, flexGrow: 1, px: 2, justifyContent: 'left' }}>
           <NavLink
             to={routes.main}
             style={({ isActive }) => ({
-              textDecoration: 'none',
               fontWeight: isActive ? 'bold' : 'normal',
+              textDecoration: isActive ? 'underline' : 'none',
               color: 'white',
-              fontSize: 'large',
+              fontSize: 'x-large',
             })}
           >
-            Home
+            Create Reports
           </NavLink>
 
           <NavLink
             to={routes.reports}
             style={({ isActive }) => ({
-              textDecoration: 'none',
               fontWeight: isActive ? 'bold' : 'normal',
+              textDecoration: isActive ? 'underline' : 'none',
               color: 'white',
-              fontSize: 'large',
+              fontSize: 'x-large',
             })}
           >
             Reports ({reports.length})

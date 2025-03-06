@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist, devtools } from 'zustand/middleware';
-import type { StoredReport } from '@/lib/types';
+import type { StoredReport } from '@/lib/types.ts';
 
 interface ReportStore {
   reports: StoredReport[];

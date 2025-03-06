@@ -19,7 +19,7 @@ import { Modal } from '@/components';
 import Chart from './Chart.tsx';
 import type { ReportColumn, ReportData, StoredReport } from '@/lib/types.ts';
 import { nanoid } from 'nanoid';
-import { useReportStore } from '@/stores/reports.store.ts';
+import { useReportStore } from '@/lib/reports.store.ts';
 
 interface ReportsProps {
   transformedData: ReportData;
