@@ -1,20 +1,51 @@
-import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
 import ThemeContext from '@/theme/context';
+import { routes } from '@/routes/AppRouter.tsx';
 
 export const Header = () => {
   const { toggleTheme, currentTheme } = useContext(ThemeContext);
 
   return (
     <AppBar position="static">
-      <Toolbar sx={{ display: 'flex' }}>
-        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} textAlign={'left'}>
-          Report View App
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* App Title */}
+        <Typography variant="h5" component="div" textAlign={'left'}>
+          Report View
         </Typography>
 
-        <IconButton onClick={toggleTheme} color={'inherit'} sx={{ pY: 70 }}>
+        {/* Navigation Links */}
+        <Box sx={{ display: 'flex', gap: 3, flexGrow: 1, px: 2, justifyContent: 'center' }}>
+          <NavLink
+            to={routes.main}
+            style={({ isActive }) => ({
+              textDecoration: 'none',
+              fontWeight: isActive ? 'bold' : 'normal',
+              color: 'white',
+              fontSize: 'large',
+            })}
+          >
+            Home
+          </NavLink>
+
+          <NavLink
+            to={routes.reports}
+            style={({ isActive }) => ({
+              textDecoration: 'none',
+              fontWeight: isActive ? 'bold' : 'normal',
+              color: 'white',
+              fontSize: 'large',
+            })}
+          >
+            Reports
+          </NavLink>
+        </Box>
+
+        {/* Theme Toggle Button */}
+        <IconButton onClick={toggleTheme} color="inherit">
           {currentTheme !== 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
         </IconButton>
       </Toolbar>

@@ -7,11 +7,16 @@ import { Main } from './Main/Main.tsx';
 export const AppRouter = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<AppLayout />}>
+      <Route path={routes.main} element={<AppLayout />}>
         <Route index element={<Main />} />
-        <Route path={'/other'} element={<div> other route</div>} />
+        <Route path={routes.reports} element={<div>Reports page</div>} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   </BrowserRouter>
 );
+
+export const routes = {
+  main: '/',
+  reports: '/reports',
+};
