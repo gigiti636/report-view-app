@@ -19,3 +19,7 @@ export interface ReportColumn extends KeyTransformedData {
 }
 
 export type ReportData = Record<string, KeyTransformedData>;
+
+export interface StoredReport extends KeyTransformedData {
+  id: string;
+}

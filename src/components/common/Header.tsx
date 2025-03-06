@@ -5,9 +5,11 @@ import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import ThemeContext from '@/theme/context';
 import { routes } from '@/routes/AppRouter.tsx';
+import { useReportStore } from '@/stores/reports.store.ts';
 
 export const Header = () => {
   const { toggleTheme, currentTheme } = useContext(ThemeContext);
+  const { reports } = useReportStore(); // ✅ Read number of reports from Zustand
 
   return (
     <AppBar position="static">
@@ -40,7 +42,7 @@ export const Header = () => {
               fontSize: 'large',
             })}
           >
-            Reports
+            Reports ({reports.length})
           </NavLink>
         </Box>
 

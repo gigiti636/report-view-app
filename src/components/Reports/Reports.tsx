@@ -17,8 +17,9 @@ import { transformAndSplitDict } from '@/lib/utils.ts';
 import { Modal } from '@/components';
 
 import Chart from './Chart.tsx';
-import type { ReportColumn, ReportData } from '@/lib/types.ts';
+import type { ReportColumn, ReportData, StoredReport } from '@/lib/types.ts';
 import { nanoid } from 'nanoid';
+import { useReportStore } from '@/stores/reports.store.ts';
 
 interface ReportsProps {
   transformedData: ReportData;
@@ -37,6 +38,8 @@ export const Reports = ({ transformedData }: ReportsProps) => {
   );
 
   const [reportIdToDelete, setReportIdToDelete] = useState<number | null>(null);
+
+  const { addReports } = useReportStore();
 
   const toggleExpandedReport = useCallback(
     (id: number) => {
@@ -77,10 +80,10 @@ export const Reports = ({ transformedData }: ReportsProps) => {
 
   const handleSaveReports = () => {
     const reportDataToSave = reportData.map((report) => {
-      return { id: nanoid(), report: report.question, data: report.values };
+      return { id: nanoid(), question: report.question, values: report.values } as StoredReport;
     });
 
-    console.log(reportDataToSave);
+    addReports(reportDataToSave);
   };
 
   return (

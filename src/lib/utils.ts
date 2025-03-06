@@ -27,20 +27,3 @@ export function transformAndSplitDict(originalDict: Record<string, number>): Rec
 
   return transformedDict;
 }
-
-export const hasStorage = (key: string): boolean => {
-  return !!localStorage.getItem(key);
-};
-
-export const getStorage = (key: string): unknown | null => {
-  // @ts-ignore
-  return !localStorage.getItem(key) ? null : JSON.parse(localStorage.getItem(key));
-};
-
-export const setStorage = (key: string, value: unknown) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
-
-export const deleteStorage = (key: string) => {
-  localStorage.removeItem(key);
-};
