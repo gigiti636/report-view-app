@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { NotFound } from '@/components';
 
+import { NotFound } from './NotFound.tsx';
 import { AppLayout } from './AppLayout.tsx';
 import { Main } from './Main/Main.tsx';
 import { ReportsPage } from './ReportsPage/ReportsPage.tsx';

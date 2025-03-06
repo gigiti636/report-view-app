@@ -1,8 +1,11 @@
 import { Box } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
-import MainHeader from './MainHeader.tsx';
-import { FileParser, DataTableEditor, Reports } from '@/components';
 import { FileDataType, ReportData } from '@/lib/types.ts';
+
+import MainHeader from './MainHeader.tsx';
+import { FileParser } from './FileParser';
+import { DataTableEditor } from './DataTableEditor';
+import { ReportsPreview } from './ReportsPreview';
 
 /* eslint-disable */
 export enum ViewModeType {
@@ -15,7 +18,7 @@ export enum ViewModeType {
 export const titleMapping: Record<ViewModeType, string> = {
   [ViewModeType.FileParser]: 'Upload xlsx file to begin!',
   [ViewModeType.DataEditor]: 'Edit Data: finish editing to view reports',
-  [ViewModeType.Report]: 'Reports Page: save reports to create dashboards',
+  [ViewModeType.Report]: 'Reports Page: preview and save!',
 };
 
 export function Main() {
@@ -54,7 +57,9 @@ export function Main() {
         <DataTableEditor data={data} setTransformedData={(data: ReportData) => setDataTransformed(data)} />
       )}
 
-      {dataTransformed && viewMode === ViewModeType.Report && <Reports transformedData={dataTransformed} />}
+      {dataTransformed && viewMode === ViewModeType.Report && (
+        <ReportsPreview transformedData={dataTransformed} />
+      )}
     </Box>
   );
 }

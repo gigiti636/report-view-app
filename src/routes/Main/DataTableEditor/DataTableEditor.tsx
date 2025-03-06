@@ -97,7 +97,7 @@ export const DataTableEditor = ({ data, setTransformedData }: DataTableEditorPro
   };
 
   return (
-    <Box p={2} height={'85vh'} overflow={'auto'}>
+    <Box p={2} height={'88vh'} overflow={'auto'}>
       <DataGrid
         rows={data?.rows}
         columns={data?.cols.map((col) => ({

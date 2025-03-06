@@ -8,15 +8,7 @@ interface HeaderProps {
 }
 const MainHeader = ({ title, showPrevStep, goPrevious }: HeaderProps) => {
   return (
-    <Box
-      sx={{ display: 'flex' }}
-      pt={2}
-      pb={1}
-      px={3}
-      borderBottom={1}
-      borderColor={'divider'}
-      alignItems={'center'}
-    >
+    <Box sx={{ display: 'flex' }} pt={2} px={3} alignItems={'center'}>
       {showPrevStep && (
         <IconButton color={'inherit'} title={'Go to previous step'} onClick={goPrevious}>
           <ArrowBackIosIcon />

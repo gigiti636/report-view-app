@@ -3,7 +3,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import ThemeContext from '@/theme/context';
+import ThemeContext from '@/theme/context.ts';
 import { routes } from '@/routes/AppRouter.tsx';
 import { useReportStore } from '@/lib/reports.store.ts';
 

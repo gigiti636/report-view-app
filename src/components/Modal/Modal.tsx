@@ -4,7 +4,7 @@ import type { TransitionProps } from '@mui/material/transitions';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { IconButton, Box, Fade, Modal, Backdrop } from '@mui/material';
 import { MouseEventHandler, ReactNode } from 'react';
-import ModalActionFooter from './ModalActionFooter';
+import ModalActionFooter from './ModalActionFooter.tsx';
 
 interface ModalFooterControl {
   cancelActionLabel?: string;

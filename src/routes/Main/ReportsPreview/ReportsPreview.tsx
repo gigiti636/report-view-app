@@ -11,7 +11,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useCallback, useState } from 'react';
-import EditableText from '@/components/DataTableEditor/EditableText.tsx';
+import EditableText from '@/routes/Main/DataTableEditor/EditableText.tsx';
 import { darken } from '@mui/material/styles';
 import { transformAndSplitDict } from '@/lib/utils.ts';
 import { Modal } from '@/components';
@@ -25,7 +25,7 @@ interface ReportsProps {
   transformedData: ReportData;
 }
 
-export const Reports = ({ transformedData }: ReportsProps) => {
+export const ReportsPreview = ({ transformedData }: ReportsProps) => {
   const [reportData, setReportData] = useState<ReportColumn[]>(
     Object.values(transformedData).map((col, index) => {
       return {
@@ -88,7 +88,7 @@ export const Reports = ({ transformedData }: ReportsProps) => {
 
   return (
     <>
-      <Box p={6}>
+      <Box p={5}>
         <Box display={'flex'} justifyContent={'space-between'}>
           <Stack direction={'row'}>
             <Button onClick={() => bulkExpandedToggle('open')} disabled={reportData.every((r) => r.open)}>

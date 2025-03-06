@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import FileInput from '@/components/FileParser/FileInput.tsx';
+import FileInput from '@/routes/Main/FileParser/FileInput.tsx';
 import { read, utils } from 'xlsx';
 import type { GridColDef } from '@mui/x-data-grid';
 import type { FileDataType, RowObject } from '@/lib/types.ts';
