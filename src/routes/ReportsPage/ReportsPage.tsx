@@ -1,10 +1,9 @@
-import { Box, Paper, Typography, IconButton, List, ListItem, ListItemText } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Box, Paper, Typography } from '@mui/material';
 import { useReportStore } from '@/lib/reports.store.ts';
-import type { StoredReport } from '@/lib/types.ts';
 import { useState } from 'react';
 import { Modal } from '@/components';
+import { ReportPreviewModal } from '@/routes/ReportsPage/ReportPreviewModal.tsx';
+import { ReportsList } from './ReportsList.tsx';
 
 export const ReportsPage = () => {
   const { reports, removeReport } = useReportStore();
@@ -20,44 +19,7 @@ export const ReportsPage = () => {
   return (
     <>
       <Box sx={{ height: 'calc(100vh - 68px)', display: 'flex', bgcolor: 'background.default' }}>
-        {/* Left Sidebar (Scrollable) */}
-        <Paper
-          sx={{
-            width: '25%',
-            height: '100%',
-            overflowY: 'auto',
-            p: 1,
-          }}
-        >
-          {reports.length === 0 ? (
-            <Typography variant="body1">No reports available.</Typography>
-          ) : (
-            <List>
-              {reports.map((report: StoredReport) => (
-                <ListItem
-                  key={report.id}
-                  divider={true}
-                  secondaryAction={
-                    <>
-                      <IconButton edge="end" aria-label="view" onClick={() => setReportIdToView(report.id)}>
-                        <VisibilityIcon />
-                      </IconButton>
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={() => setReportIdToDelete(report.id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </>
-                  }
-                >
-                  <ListItemText primary={report.question} />
-                </ListItem>
-              ))}
-            </List>
-          )}
-        </Paper>
+        <ReportsList reports={reports} onView={setReportIdToView} onDelete={setReportIdToDelete} />
 
         {/* Right Main Content (Dashboard) */}
         <Box
@@ -76,24 +38,7 @@ export const ReportsPage = () => {
         </Box>
       </Box>
 
-      <Modal
-        header={'Inspect Report'}
-        open={Boolean(reportIdToView)}
-        onClose={() => setReportIdToView(null)}
-        closeModal={() => setReportIdToView(null)}
-        callToActionLabel={'Close'}
-        callToAction={() => setReportIdToView(null)}
-      >
-        {reports.find((report) => report.id === reportIdToView) && (
-          <pre>
-            {JSON.stringify(
-              reports.find((report) => report.id === reportIdToView),
-              null,
-              2,
-            )}
-          </pre>
-        )}
-      </Modal>
+      <ReportPreviewModal reportIdToView={reportIdToView} onClose={() => setReportIdToView(null)} />
 
       <Modal
         header={'Delete Report'}
