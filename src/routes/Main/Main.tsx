@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import MainHeader from './MainHeader.tsx';
-import { FileParser, DataTableEditor, Report } from '@/components';
-import { EditorProps, TransformedData } from '@/lib/types.ts';
+import { FileParser, DataTableEditor, Reports } from '@/components';
+import { FileDataType, ReportData } from '@/lib/types.ts';
 
 /* eslint-disable */
 export enum ViewModeType {
@@ -19,8 +19,8 @@ export const titleMapping: Record<ViewModeType, string> = {
 };
 
 export function Main() {
-  const [data, setData] = useState<EditorProps | null>(null);
-  const [dataTransformed, setDataTransformed] = useState<TransformedData | null>(null);
+  const [data, setData] = useState<FileDataType | null>(null);
+  const [dataTransformed, setDataTransformed] = useState<ReportData | null>(null);
 
   const viewMode = useMemo<ViewModeType>(() => {
     if (!data) {
@@ -51,13 +51,10 @@ export function Main() {
       {viewMode === ViewModeType.FileParser && <FileParser onFileParsed={(data) => setData(data)} />}
 
       {viewMode === ViewModeType.DataEditor && data && (
-        <DataTableEditor
-          data={data}
-          setTransformedData={(data: TransformedData) => setDataTransformed(data)}
-        />
+        <DataTableEditor data={data} setTransformedData={(data: ReportData) => setDataTransformed(data)} />
       )}
 
-      {dataTransformed && viewMode === ViewModeType.Report && <Report transformedData={dataTransformed} />}
+      {dataTransformed && viewMode === ViewModeType.Report && <Reports transformedData={dataTransformed} />}
     </Box>
   );
 }

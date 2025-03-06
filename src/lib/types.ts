@@ -5,7 +5,7 @@ export type RowObject = {
   [key: `col${number}`]: string;
 };
 
-export type EditorProps = { cols: GridColDef[]; rows: RowObject[] };
+export type FileDataType = { cols: GridColDef[]; rows: RowObject[] };
 
 export type KeyTransformedData = {
   question: string;
@@ -18,4 +18,4 @@ export interface ReportColumn extends KeyTransformedData {
   open: boolean;
 }
 
-export type TransformedData = Record<string, KeyTransformedData>;
+export type ReportData = Record<string, KeyTransformedData>;

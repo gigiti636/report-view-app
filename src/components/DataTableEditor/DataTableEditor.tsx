@@ -8,11 +8,11 @@ import {
   useGridSelector,
 } from '@mui/x-data-grid';
 import { Box, Button, Typography } from '@mui/material';
-import { CellDataRepetition, EditorProps, KeyTransformedData, TransformedData } from '@/lib/types.ts';
+import { CellDataRepetition, FileDataType, KeyTransformedData, ReportData } from '@/lib/types.ts';
 
 interface DataTableEditorProps {
-  data: EditorProps;
-  setTransformedData: (_data: TransformedData) => void;
+  data: FileDataType;
+  setTransformedData: (_data: ReportData) => void;
 }
 export const DataTableEditor = ({ data, setTransformedData }: DataTableEditorProps) => {
   const ExtraColumnAction = (props: GridColumnMenuProps) => {

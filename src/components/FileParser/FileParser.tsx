@@ -2,10 +2,10 @@ import { Box } from '@mui/material';
 import FileInput from '@/components/FileParser/FileInput.tsx';
 import { read, utils } from 'xlsx';
 import type { GridColDef } from '@mui/x-data-grid';
-import type { EditorProps, RowObject } from '@/lib/types.ts';
+import type { FileDataType, RowObject } from '@/lib/types.ts';
 
 interface FIleParserProps {
-  onFileParsed: (_data: EditorProps) => void;
+  onFileParsed: (_data: FileDataType) => void;
 }
 
 export const FileParser = ({ onFileParsed }: FIleParserProps) => {
