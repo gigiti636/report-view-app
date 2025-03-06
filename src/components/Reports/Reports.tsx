@@ -18,6 +18,7 @@ import { Modal } from '@/components';
 
 import Chart from './Chart.tsx';
 import type { ReportColumn, ReportData } from '@/lib/types.ts';
+import { nanoid } from 'nanoid';
 
 interface ReportsProps {
   transformedData: ReportData;
@@ -74,6 +75,14 @@ export const Reports = ({ transformedData }: ReportsProps) => {
     );
   }, []);
 
+  const handleSaveReports = () => {
+    const reportDataToSave = reportData.map((report) => {
+      return { id: nanoid(), report: report.question, data: report.values };
+    });
+
+    console.log(reportDataToSave);
+  };
+
   return (
     <>
       <Box p={6}>
@@ -86,6 +95,9 @@ export const Reports = ({ transformedData }: ReportsProps) => {
               Collapse All
             </Button>
           </Stack>
+          <Button onClick={handleSaveReports} variant={'contained'} color={'secondary'}>
+            Save All Reports
+          </Button>
         </Box>
         {reportData.map((col, index) => (
           <Accordion
