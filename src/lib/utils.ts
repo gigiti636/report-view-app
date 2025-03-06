@@ -1,12 +1,3 @@
-import dayjs from 'dayjs';
-
-export function isValidTimestamp(timestamp: string) {
-  const regex =
-    /^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(20\d{2})\s([01]?[0-9]|2[0-3]):([0-5]?[0-9]):([0-5]?[0-9])$/;
-
-  return !regex.test(timestamp) ? false : dayjs(timestamp, 'M/D/YYYY HH:mm:ss').isValid();
-}
-
 export function transformAndSplitDict(originalDict: Record<string, number>): Record<string, number> {
   const transformedDict: Record<string, number> = {};
 
