@@ -12,7 +12,10 @@ export const Header = () => {
   const { reports } = useReportStore();
 
   return (
-    <AppBar position="static" sx={{ height: '68px!important' }}>
+    <AppBar
+      position="static"
+      sx={{ height: '68px!important', background: (theme) => theme.palette.primary.main }}
+    >
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         {/* Navigation Links */}
         <Box sx={{ display: 'flex', gap: 4, flexGrow: 1, px: 2, justifyContent: 'left' }}>
@@ -22,7 +25,7 @@ export const Header = () => {
               fontWeight: isActive ? 'bold' : 'normal',
               textDecoration: isActive ? 'underline' : 'none',
               color: 'white',
-              fontSize: 'x-large',
+              fontSize: 'large',
             })}
           >
             Create Reports
@@ -34,7 +37,7 @@ export const Header = () => {
               fontWeight: isActive ? 'bold' : 'normal',
               textDecoration: isActive ? 'underline' : 'none',
               color: 'white',
-              fontSize: 'x-large',
+              fontSize: 'large',
             })}
           >
             Reports ({reports.length})

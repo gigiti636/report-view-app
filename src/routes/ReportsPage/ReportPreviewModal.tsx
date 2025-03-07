@@ -1,6 +1,6 @@
 import { Chart, Modal } from '@/components';
 import { useReportStore } from '@/lib/reports.store.ts';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 interface ReportPreviewModalProps {
   reportIdToView: string | null;
@@ -23,6 +23,7 @@ export const ReportPreviewModal = ({ reportIdToView, onClose }: ReportPreviewMod
       maxWidth={'750'}
     >
       <Box pt={3} pb={3}>
+        <Typography>{report.question}</Typography>
         <Chart colData={report.values} />
       </Box>
     </Modal>
