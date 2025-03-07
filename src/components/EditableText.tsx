@@ -46,7 +46,6 @@ const EditableText = ({ text, onSave }: EditableTextProps) => {
         py: 1 / 2,
         borderRadius: '5px',
         display: 'flex',
-        width: 'unset',
       }}
       endAdornment={
         <IconButton onClick={handleSaveClick} edge="end" sx={{ color: 'text.secondary' }}>
@@ -66,9 +65,12 @@ const EditableText = ({ text, onSave }: EditableTextProps) => {
           darken(theme.palette.background.paper, theme.palette.mode === 'dark' ? 0.28 : 0.09),
         pl: 2,
         pr: 1,
-        py: 1 / 2,
+        py: 3 / 2,
         borderRadius: '5px',
         cursor: 'pointer',
+        '& .MuiTypography-root': {
+          flexGrow: 1,
+        },
       }}
     >
       {text}

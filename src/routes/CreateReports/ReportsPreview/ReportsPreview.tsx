@@ -16,7 +16,7 @@ import { transformAndSplitDict } from '@/lib/utils.ts';
 import { EditableText, Modal } from '@/components';
 
 import Chart from './ChartControl.tsx';
-import type { ReportColumn, ReportData, StoredReport } from '@/lib/types.ts';
+import { ChartType, ReportColumn, ReportData, StoredReport } from '@/lib/types.ts';
 import { nanoid } from 'nanoid';
 import { useReportStore } from '@/lib/reports.store.ts';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +27,8 @@ interface ReportsProps {
   handleClear: () => void;
 }
 
+const AllChartTypesArray = Object.values(ChartType);
+
 export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) => {
   const [reportData, setReportData] = useState<ReportColumn[]>(
     Object.values(transformedData).map((col, index) => {
@@ -35,6 +37,7 @@ export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) =
         question: col.question,
         values: col.values,
         open: true,
+        type: AllChartTypesArray[index % AllChartTypesArray.length],
       };
     }),
   );
@@ -69,6 +72,12 @@ export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) =
     );
   }, []);
 
+  const handleChartType = useCallback((id: number, new_type: ChartType) => {
+    setReportData((currentData) =>
+      currentData.map((col) => (col.id === id ? { ...col, type: new_type } : col)),
+    );
+  }, []);
+
   const handleDiscardReport = useCallback(() => {
     if (reportIdToDelete) {
       setReportData((currentData) => currentData.filter((report) => report.id !== reportIdToDelete));
@@ -84,7 +93,12 @@ export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) =
 
   const handleSaveReports = () => {
     const reportDataToSave = reportData.map((report) => {
-      return { id: nanoid(), question: report.question, values: report.values } as StoredReport;
+      return {
+        id: nanoid(),
+        question: report.question,
+        values: report.values,
+        type: report.type,
+      } as StoredReport;
     });
 
     addReports(reportDataToSave);
@@ -139,7 +153,13 @@ export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) =
             </AccordionSummary>
             <AccordionDetails>
               <Typography>{Object.keys(col.values).every((k) => k.includes(',')) ? 'test' : ''}</Typography>
-              <Chart id={col.id} colData={col.values} handleGroupID={handleGroupID} />
+              <Chart
+                id={col.id}
+                colData={col.values}
+                handleGroupID={handleGroupID}
+                type={col.type}
+                handleUpdateChartType={(newType) => handleChartType(col.id, newType)}
+              />
             </AccordionDetails>
           </Accordion>
         ))}

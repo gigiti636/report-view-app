@@ -1,19 +1,25 @@
 import { Box, Button } from '@mui/material';
 import { Chart } from '@/components';
+import { ChartProps } from '@/components/Chart.tsx';
 
-interface ChartProps {
+interface ControlChartProps extends ChartProps {
   id: number;
-  colData: Record<string, number>;
   handleGroupID: (_id: number) => void;
 }
 
-export default function ChartControl({ colData, id, handleGroupID }: ChartProps) {
+export default function ChartControl({
+  colData,
+  type,
+  id,
+  handleGroupID,
+  handleUpdateChartType,
+}: ControlChartProps) {
   const labels = Object.keys(colData);
   const data_can_be_grouped = labels.some((v) => v.includes(', '));
 
   return (
     <Box>
-      <Chart colData={colData} />
+      <Chart colData={colData} type={type} handleUpdateChartType={handleUpdateChartType} />
 
       {/* Group Data Button (Shown only if grouping is possible) */}
       {data_can_be_grouped && (

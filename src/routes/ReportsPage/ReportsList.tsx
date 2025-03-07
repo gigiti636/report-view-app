@@ -6,7 +6,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  Paper,
   Stack,
   Typography,
 } from '@mui/material';
@@ -41,7 +40,7 @@ export const ReportsList = ({
   const theme = useTheme();
 
   return (
-    <Paper sx={{ width: '20%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <>
       {/*  Fixed Control Section */}
       <Box
         sx={{
@@ -91,8 +90,8 @@ export const ReportsList = ({
               variant="contained"
               size="small"
               color="success"
-              onClick={handleSentToDashboard}
               disabled={selectedReports.length === 0}
+              onClick={handleSentToDashboard}
               sx={{
                 flex: 1,
                 bgcolor: theme.palette.success.main,
@@ -101,10 +100,11 @@ export const ReportsList = ({
                 },
               }}
             >
-              Add to Dashboard
+              Create Dashboard
             </Button>
             <Button
               color={'error'}
+              variant={'outlined'}
               title={'delete selected reports'}
               onClick={handleDeleteSelected}
               disabled={selectedReports.length === 0}
@@ -153,6 +153,6 @@ export const ReportsList = ({
           </List>
         )}
       </Box>
-    </Paper>
+    </>
   );
 };

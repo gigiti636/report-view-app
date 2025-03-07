@@ -3,16 +3,17 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { Tabs, Tab, Box } from '@mui/material';
+import { ChartType } from '@/lib/types.ts';
 
-interface ChartProps {
+export interface ChartProps {
   colData: Record<string, number>;
   defaultTab?: ChartType;
+  type: ChartType;
+  handleUpdateChartType?: (_type: ChartType) => void;
 }
 
-export type ChartType = 'bar' | 'pie' | 'donut' | 'line';
-
-export default function Chart({ colData, defaultTab }: ChartProps) {
-  const [activeTab, setActiveTab] = useState(defaultTab || 'bar');
+export default function Chart({ colData, defaultTab, type, handleUpdateChartType }: ChartProps) {
+  const [activeTab, setActiveTab] = useState(type || 'bar');
 
   const labels = Object.keys(colData);
   const freq = Object.values(colData);
@@ -23,10 +24,15 @@ export default function Chart({ colData, defaultTab }: ChartProps) {
       {!defaultTab && (
         <Tabs
           value={activeTab}
-          onChange={(_, newValue) => setActiveTab(newValue)}
+          onChange={(_, newValue) => {
+            setActiveTab(newValue);
+
+            if (handleUpdateChartType) handleUpdateChartType(newValue);
+          }}
           variant="fullWidth"
           textColor="primary"
           indicatorColor="primary"
+          sx={{ mb: 2 }}
         >
           <Tab label="Bar Chart" value="bar" />
           <Tab label="Pie Chart" value="pie" />

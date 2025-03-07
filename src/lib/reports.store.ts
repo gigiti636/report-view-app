@@ -15,7 +15,6 @@ export const useReportStore = create<ReportStore>()(
     persist(
       (set) => ({
         reports: [], // Initial state
-
         addReports: (_newReports) =>
           set(
             (state) => ({
