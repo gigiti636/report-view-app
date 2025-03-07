@@ -1,12 +1,12 @@
 import { Box, Breadcrumbs, Grid, Link, Typography } from '@mui/material';
 import { RefObject, useEffect, useRef } from 'react';
-import { StoredReport } from '@/lib/types.ts';
+import { DashBoardWidget, StoredReport } from '@/lib/types.ts';
 import { Chart } from '@/components';
 
 interface DashBoardGridProps {
   dashboardReports: StoredReport[];
   handleBackToReports: () => void;
-  handleUpdateDashboardWidget: (_id: string, _partialStoredItem: Partial<StoredReport>) => void;
+  handleUpdateDashboardWidget: (_id: string, _partialStoredItem: Partial<DashBoardWidget>) => void;
   containerRef: RefObject<HTMLDivElement>;
 }
 
@@ -29,6 +29,7 @@ export const DashBoardGridArea = ({
   }, [containerRef]);
 
   const ras = [4, 4, 6, 6, 12];
+  const ran = [8, 7, 6, 5, 4, 3];
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -75,6 +76,7 @@ export const DashBoardGridArea = ({
                 <Grid
                   item
                   xs={ras[index % ras.length]}
+                  order={ran[index % ras.length]}
                   key={report.id}
                   sx={{ '.MuiBox-root': { padding: 4 } }}
                 >

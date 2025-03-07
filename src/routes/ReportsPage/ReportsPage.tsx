@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { Modal } from '@/components';
 import { ReportPreview } from '@/routes/ReportsPage/ReportPreview.tsx';
 import { ReportsList } from './ReportsList.tsx';
-import { StoredReport } from '@/lib/types.ts';
+import { DashBoardWidget } from '@/lib/types.ts';
 import { DashBoardPrompt } from '@/routes/ReportsPage/DashboardPrompt.tsx';
 import { DashBoardGridArea } from './DashBoardGridArea.tsx'; // Import the new component
 
@@ -14,9 +14,9 @@ export const ReportsPage = () => {
   const [reportIdToView, setReportIdToView] = useState<string | null>(null);
   const [selectedReports, setSelectedReports] = useState<string[]>([]);
 
-  const [dashboardReports, setDashboardReports] = useState<StoredReport[]>([]);
+  const [dashboardReports, setDashboardReports] = useState<DashBoardWidget[]>([]);
 
-  const handleUpdateDashboardWidget = (id: string, updatedItem: Partial<StoredReport>) => {
+  const handleUpdateDashboardWidget = (id: string, updatedItem: Partial<DashBoardWidget>) => {
     setDashboardReports((prev) =>
       prev.map((widget) => (widget.id === id ? { ...widget, ...updatedItem } : widget)),
     );
@@ -38,7 +38,7 @@ export const ReportsPage = () => {
 
   const handleSentToDashboard = () => {
     const reportToAddToDashboard = reports.filter((report) => selectedReports.includes(report.id));
-    setDashboardReports(reportToAddToDashboard);
+    setDashboardReports(reportToAddToDashboard.map((rep, index) => ({ ...rep, cols: 6, order: index + 1 })));
     setSelectedReports([]);
   };
 

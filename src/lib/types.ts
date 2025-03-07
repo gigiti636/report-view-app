@@ -35,3 +35,8 @@ export enum ChartType {
 }
 
 /* eslint-enable */
+
+export type DashBoardWidget = {
+  cols: number;
+  order: number;
+} & StoredReport;
