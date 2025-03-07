@@ -1,7 +1,7 @@
 import { Box, Breadcrumbs, Grid, Link, Typography } from '@mui/material';
 import { RefObject, useEffect, useRef } from 'react';
 import { StoredReport } from '@/lib/types.ts';
-import { Chart, EditableText } from '@/components';
+import { Chart } from '@/components';
 
 interface DashBoardGridProps {
   dashboardReports: StoredReport[];
@@ -13,7 +13,6 @@ interface DashBoardGridProps {
 export const DashBoardGridArea = ({
   dashboardReports,
   handleBackToReports,
-  handleUpdateDashboardWidget,
   containerRef,
 }: DashBoardGridProps) => {
   const resizeObserver = useRef<ResizeObserver | null>(null);
@@ -29,11 +28,13 @@ export const DashBoardGridArea = ({
     };
   }, [containerRef]);
 
+  const ras = [4, 4, 6, 6, 12];
+
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
         <Link underline="hover" color="inherit" onClick={handleBackToReports} sx={{ cursor: 'pointer' }}>
-          Back to Reports
+          {'< '}Back to Reports
         </Link>
 
         <Typography color="text.primary">Draft Dashboard</Typography>
@@ -45,7 +46,6 @@ export const DashBoardGridArea = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          height: '100%',
         }}
       >
         <Box
@@ -65,34 +65,30 @@ export const DashBoardGridArea = ({
               flex: 1,
               width: '100%',
               overflowY: 'auto',
-              maxHeight: 'calc(100% - 20px)',
               pr: 1,
+              pt: 3,
+              pb: 7,
             }}
           >
             <Grid container spacing={2}>
-              {dashboardReports.map((report) => (
-                <Grid item xs={6} key={report.id}>
+              {dashboardReports.map((report, index) => (
+                <Grid
+                  item
+                  xs={ras[index % ras.length]}
+                  key={report.id}
+                  sx={{ '.MuiBox-root': { padding: 4 } }}
+                >
                   <Box
                     sx={{
-                      p: 2,
                       bgcolor: 'background.paper',
                       borderRadius: 2,
                       boxShadow: 1,
                     }}
                   >
-                    <EditableText
-                      onSave={(newText) => {
-                        handleUpdateDashboardWidget(report.id, { question: newText });
-                      }}
-                      text={report.question}
-                    />
-                    <Chart
-                      colData={report.values}
-                      type={report.type}
-                      handleUpdateChartType={(newType) =>
-                        handleUpdateDashboardWidget(report.id, { type: newType })
-                      }
-                    />
+                    <Typography variant="h6" gutterBottom sx={{ pt: 1, pb: 2 }}>
+                      {report.question}
+                    </Typography>
+                    <Chart colData={report.values} defaultTab={report.type} type={report.type} />
                   </Box>
                 </Grid>
               ))}
