@@ -5,14 +5,13 @@ import type { StoredReport } from '@/lib/types.ts';
 interface ReportStore {
   reports: StoredReport[];
   addReports: (_newReports: StoredReport[]) => void;
-  removeReport: (_id: string) => void;
+  removeReport: (_id: string | string[]) => void;
   updateReport: (_id: string, _updatedReport: Partial<StoredReport>) => void;
   clearReports: () => void;
 }
 
 export const useReportStore = create<ReportStore>()(
   devtools(
-    // 🔥 Enable Redux DevTools
     persist(
       (set) => ({
         reports: [], // Initial state
@@ -23,14 +22,17 @@ export const useReportStore = create<ReportStore>()(
               reports: [...state.reports, ..._newReports],
             }),
             false,
-            'ADD_REPORTS', // 🔍 Action name for Redux DevTools
+            'ADD_REPORTS',
           ),
 
         removeReport: (_id) =>
           set(
-            (state) => ({
-              reports: state.reports.filter((report) => report.id !== _id),
-            }),
+            (state) => {
+              const idsToRemove = Array.isArray(_id) ? new Set(_id) : new Set([_id]);
+              return {
+                reports: state.reports.filter((report) => !idsToRemove.has(report.id)),
+              };
+            },
             false,
             'REMOVE_REPORT',
           ),
@@ -53,6 +55,6 @@ export const useReportStore = create<ReportStore>()(
         storage: createJSONStorage(() => localStorage),
       },
     ),
-    { name: 'Report Store' }, // 🔍 Custom store name in Redux DevTools
+    { name: 'Report Store' },
   ),
 );

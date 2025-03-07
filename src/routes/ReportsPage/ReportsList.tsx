@@ -1,13 +1,14 @@
 import {
+  Box,
+  Button,
+  Checkbox,
+  IconButton,
   List,
   ListItem,
   ListItemText,
-  IconButton,
   Paper,
+  Stack,
   Typography,
-  Checkbox,
-  Button,
-  Box,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -22,6 +23,8 @@ interface ReportsListProps {
   onSelectAll: () => void;
   onView: (_id: string) => void;
   onDelete: (_id: string) => void;
+  handleDeleteSelected: () => void;
+  handleSentToDashboard: () => void;
 }
 
 export const ReportsList = ({
@@ -32,11 +35,10 @@ export const ReportsList = ({
   onSelectAll,
   onView,
   onDelete,
+  handleDeleteSelected,
+  handleSentToDashboard,
 }: ReportsListProps) => {
   const theme = useTheme();
-
-  //TODO  separate into two components
-  //TODO  make delete work with all selected
 
   return (
     <Paper sx={{ width: '20%', height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -72,7 +74,6 @@ export const ReportsList = ({
               variant="outlined"
               size="small"
               onClick={onSelectAll}
-              disabled={selectedReports.length === 0}
               sx={{
                 color: theme.palette.mode === 'dark' ? 'white' : 'inherit',
                 borderColor: theme.palette.mode === 'dark' ? 'grey.600' : 'inherit',
@@ -85,21 +86,32 @@ export const ReportsList = ({
             </Button>
           </Box>
 
-          <Button
-            variant="contained"
-            size="small"
-            color="success"
-            onClick={onClearSelection}
-            disabled={selectedReports.length === 0}
-            sx={{
-              bgcolor: theme.palette.success.main,
-              '&:hover': {
-                bgcolor: theme.palette.success.dark,
-              },
-            }}
-          >
-            Add to Dashboard
-          </Button>
+          <Stack direction={'row'} gap={3}>
+            <Button
+              variant="contained"
+              size="small"
+              color="success"
+              onClick={handleSentToDashboard}
+              disabled={selectedReports.length === 0}
+              sx={{
+                flex: 1,
+                bgcolor: theme.palette.success.main,
+                '&:hover': {
+                  bgcolor: theme.palette.success.dark,
+                },
+              }}
+            >
+              Add to Dashboard
+            </Button>
+            <Button
+              color={'error'}
+              title={'delete selected reports'}
+              onClick={handleDeleteSelected}
+              disabled={selectedReports.length === 0}
+            >
+              Delete selected
+            </Button>
+          </Stack>
         </Box>
       </Box>
 

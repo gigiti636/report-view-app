@@ -8,7 +8,7 @@ import { DashBoardPrompt } from '@/routes/ReportsPage/DashboardPrompt.tsx';
 
 export const ReportsPage = () => {
   const { reports, removeReport } = useReportStore();
-  const [reportIdToDelete, setReportIdToDelete] = useState<string | null>(null);
+  const [reportIdsToDelete, setReportIdsToDelete] = useState<string[]>([]);
   const [reportIdToView, setReportIdToView] = useState<string | null>(null);
 
   const [selectedReports, setSelectedReports] = useState<string[]>([]);
@@ -21,10 +21,17 @@ export const ReportsPage = () => {
           : [...prevSelected, id], // Select
     );
   };
+
   const handleDiscardReport = () => {
-    if (reportIdToDelete === null) return;
-    removeReport(reportIdToDelete);
-    setReportIdToDelete(null);
+    removeReport(reportIdsToDelete);
+
+    setSelectedReports((prevSelected) => prevSelected.filter((id) => !reportIdsToDelete.includes(id)));
+
+    setReportIdsToDelete([]);
+  };
+
+  const handleSentToDashboard = () => {
+    alert(selectedReports);
   };
 
   return (
@@ -37,7 +44,9 @@ export const ReportsPage = () => {
           onSelectAll={() => setSelectedReports(reports.map((report) => report.id))}
           onSelect={handleSelection}
           onView={setReportIdToView}
-          onDelete={setReportIdToDelete}
+          onDelete={(id) => setReportIdsToDelete([id])}
+          handleDeleteSelected={() => setReportIdsToDelete(selectedReports)}
+          handleSentToDashboard={handleSentToDashboard}
         />
 
         {/* Right Main Content (Dashboard) */}
@@ -72,14 +81,14 @@ export const ReportsPage = () => {
 
       <Modal
         header={'Delete Report'}
-        open={Boolean(reportIdToDelete)}
-        onClose={() => setReportIdToDelete(null)}
-        closeModal={() => setReportIdToDelete(null)}
+        open={reportIdsToDelete.length > 0}
+        onClose={() => setReportIdsToDelete([])}
+        closeModal={() => setReportIdsToDelete([])}
         callToActionIsDelete={true}
         callToActionLabel={'Delete'}
         callToAction={handleDiscardReport}
       >
-        Are you sure you want to remove this report?
+        Are you sure you want to remove this reports({reportIdsToDelete.length})?
       </Modal>
     </>
   );

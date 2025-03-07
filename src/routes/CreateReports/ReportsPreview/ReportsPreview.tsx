@@ -39,7 +39,7 @@ export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) =
     }),
   );
 
-  const [reportIdToDelete, setReportIdToDelete] = useState<number | null>(null);
+  const [reportIdToDelete, setReportIdsToDelete] = useState<number | null>(null);
 
   const [showInsertedModal, setShowInsertedModal] = useState(false);
 
@@ -72,7 +72,7 @@ export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) =
   const handleDiscardReport = useCallback(() => {
     if (reportIdToDelete) {
       setReportData((currentData) => currentData.filter((report) => report.id !== reportIdToDelete));
-      setReportIdToDelete(null);
+      setReportIdsToDelete(null);
     }
   }, [reportIdToDelete]);
 
@@ -129,7 +129,7 @@ export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) =
                   title={'Discard question'}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setReportIdToDelete(col.id);
+                    setReportIdsToDelete(col.id);
                   }}
                   sx={{ mx: 1 }}
                 >
@@ -159,8 +159,8 @@ export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) =
       <Modal
         header={'Delete Report'}
         open={Boolean(reportIdToDelete)}
-        onClose={() => setReportIdToDelete(null)}
-        closeModal={() => setReportIdToDelete(null)}
+        onClose={() => setReportIdsToDelete(null)}
+        closeModal={() => setReportIdsToDelete(null)}
         callToActionIsDelete={true}
         callToActionLabel={'Delete'}
         callToAction={handleDiscardReport}
