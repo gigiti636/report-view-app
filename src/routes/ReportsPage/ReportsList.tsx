@@ -35,6 +35,9 @@ export const ReportsList = ({
 }: ReportsListProps) => {
   const theme = useTheme();
 
+  //TODO  separate into two components
+  //TODO  make delete work with all selected
+
   return (
     <Paper sx={{ width: '20%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/*  Fixed Control Section */}

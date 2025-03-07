@@ -19,12 +19,15 @@ import Chart from './ChartControl.tsx';
 import type { ReportColumn, ReportData, StoredReport } from '@/lib/types.ts';
 import { nanoid } from 'nanoid';
 import { useReportStore } from '@/lib/reports.store.ts';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '@/routes/AppRouter.tsx';
 
 interface ReportsProps {
   transformedData: ReportData;
+  handleClear: () => void;
 }
 
-export const ReportsPreview = ({ transformedData }: ReportsProps) => {
+export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) => {
   const [reportData, setReportData] = useState<ReportColumn[]>(
     Object.values(transformedData).map((col, index) => {
       return {
@@ -37,6 +40,8 @@ export const ReportsPreview = ({ transformedData }: ReportsProps) => {
   );
 
   const [reportIdToDelete, setReportIdToDelete] = useState<number | null>(null);
+
+  const [showInsertedModal, setShowInsertedModal] = useState(false);
 
   const { addReports } = useReportStore();
 
@@ -83,7 +88,10 @@ export const ReportsPreview = ({ transformedData }: ReportsProps) => {
     });
 
     addReports(reportDataToSave);
+    setShowInsertedModal(true);
   };
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -136,6 +144,17 @@ export const ReportsPreview = ({ transformedData }: ReportsProps) => {
           </Accordion>
         ))}
       </Box>
+
+      <Modal
+        open={showInsertedModal}
+        header={'Reports have been saved!'}
+        callToActionLabel={'Go to Reports Page'}
+        callToAction={() => navigate(routes.reports)}
+        cancelActionLabel={'Insert new file'}
+        cancelAction={handleClear}
+      >
+        How you want to proceed ?
+      </Modal>
 
       <Modal
         header={'Delete Report'}

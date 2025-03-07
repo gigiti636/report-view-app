@@ -58,7 +58,13 @@ export function CreateReports() {
       )}
 
       {dataTransformed && viewMode === ViewModeType.Report && (
-        <ReportsPreview transformedData={dataTransformed} />
+        <ReportsPreview
+          transformedData={dataTransformed}
+          handleClear={() => {
+            setDataTransformed(null);
+            setData(null);
+          }}
+        />
       )}
     </Box>
   );
