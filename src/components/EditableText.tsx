@@ -45,6 +45,8 @@ const EditableText = ({ text, onSave }: EditableTextProps) => {
         pr: 1,
         py: 1 / 2,
         borderRadius: '5px',
+        display: 'flex',
+        width: 'unset',
       }}
       endAdornment={
         <IconButton onClick={handleSaveClick} edge="end" sx={{ color: 'text.secondary' }}>

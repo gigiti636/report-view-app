@@ -1,6 +1,6 @@
-import { Chart, Modal } from '@/components';
+import { Chart, EditableText, Modal } from '@/components';
 import { useReportStore } from '@/lib/reports.store.ts';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 interface ReportPreviewModalProps {
   reportIdToView: string | null;
@@ -8,7 +8,7 @@ interface ReportPreviewModalProps {
 }
 
 export const ReportPreviewModal = ({ reportIdToView, onClose }: ReportPreviewModalProps) => {
-  const { reports } = useReportStore();
+  const { reports, updateReport } = useReportStore();
 
   const report = reports.find((report) => report.id === reportIdToView)!;
   if (!report) return null;
@@ -23,7 +23,14 @@ export const ReportPreviewModal = ({ reportIdToView, onClose }: ReportPreviewMod
       maxWidth={'750'}
     >
       <Box pt={3} pb={3}>
-        <Typography>{report.question}</Typography>
+        <Box display={'flex'}>
+          <EditableText
+            text={report.question}
+            onSave={(newValue) => {
+              updateReport(report.id, { question: newValue });
+            }}
+          />
+        </Box>
         <Chart colData={report.values} />
       </Box>
     </Modal>
