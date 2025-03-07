@@ -1,16 +1,18 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Breadcrumbs, Grid, Link, Typography } from '@mui/material';
 import { RefObject, useEffect, useRef } from 'react';
 import { StoredReport } from '@/lib/types.ts';
 import { Chart, EditableText } from '@/components';
 
 interface DashBoardGridProps {
   dashboardReports: StoredReport[];
+  handleBackToReports: () => void;
   handleUpdateDashboardWidget: (_id: string, _partialStoredItem: Partial<StoredReport>) => void;
   containerRef: RefObject<HTMLDivElement>;
 }
 
 export const DashBoardGridArea = ({
   dashboardReports,
+  handleBackToReports,
   handleUpdateDashboardWidget,
   containerRef,
 }: DashBoardGridProps) => {
@@ -29,6 +31,13 @@ export const DashBoardGridArea = ({
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
+        <Link underline="hover" color="inherit" onClick={handleBackToReports} sx={{ cursor: 'pointer' }}>
+          Back to Reports
+        </Link>
+
+        <Typography color="text.primary">Draft Dashboard</Typography>
+      </Breadcrumbs>
       <Box
         sx={{
           flex: 1,
@@ -47,7 +56,6 @@ export const DashBoardGridArea = ({
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            p: 4,
             overflow: 'hidden',
           }}
         >

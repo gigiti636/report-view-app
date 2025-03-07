@@ -45,8 +45,8 @@ export const ReportsPage = () => {
   return (
     <>
       <Box sx={{ height: 'calc(100vh - 68px)', display: 'flex', bgcolor: 'background.default' }}>
-        <Paper sx={{ width: '40%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-          {dashboardReports.length === 0 ? (
+        {dashboardReports.length === 0 && (
+          <Paper sx={{ width: '40%', height: '100%', display: 'flex', flexDirection: 'column' }}>
             <ReportsList
               reports={reports}
               selectedReports={selectedReports}
@@ -58,12 +58,9 @@ export const ReportsPage = () => {
               handleDeleteSelected={() => setReportIdsToDelete(selectedReports)}
               handleSentToDashboard={handleSentToDashboard}
             />
-          ) : (
-            <div>make a grid settings component, for the dashboardItems i render</div>
-          )}
-        </Paper>
+          </Paper>
+        )}
 
-        {/* Dashboard Section */}
         <Box
           ref={containerRef}
           sx={{
@@ -81,6 +78,7 @@ export const ReportsPage = () => {
           {dashboardReports.length > 0 && (
             <DashBoardGridArea
               dashboardReports={dashboardReports}
+              handleBackToReports={() => setDashboardReports([])}
               containerRef={containerRef}
               handleUpdateDashboardWidget={handleUpdateDashboardWidget}
             />
