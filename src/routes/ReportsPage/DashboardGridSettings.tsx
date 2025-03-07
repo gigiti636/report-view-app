@@ -9,7 +9,7 @@ interface GridSettingsProps {
   }) => void;
 }
 
-export const GridSettings = ({ onUpdateSettings }: GridSettingsProps) => {
+export const DashboardGridSettings = ({ onUpdateSettings }: GridSettingsProps) => {
   const [isDraggable, setIsDraggable] = useState(true);
   const [isResizable, setIsResizable] = useState(true);
   const [compactType, setCompactType] = useState<'vertical' | 'horizontal' | null>('vertical');

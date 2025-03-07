@@ -6,7 +6,7 @@ import { ReportPreview } from '@/routes/ReportsPage/ReportPreview.tsx';
 import { ReportsList } from './ReportsList.tsx';
 import { StoredReport } from '@/lib/types.ts';
 import { DashBoardPrompt } from '@/routes/ReportsPage/DashboardPrompt.tsx';
-import { DashBoardGrid } from './DashBoardGrid.tsx'; // Import the new component
+import { DashBoardGridArea } from './DashBoardGridArea.tsx'; // Import the new component
 
 export const ReportsPage = () => {
   const { reports, removeReport } = useReportStore();
@@ -79,7 +79,7 @@ export const ReportsPage = () => {
           }}
         >
           {dashboardReports.length > 0 && (
-            <DashBoardGrid
+            <DashBoardGridArea
               dashboardReports={dashboardReports}
               containerRef={containerRef}
               handleUpdateDashboardWidget={handleUpdateDashboardWidget}

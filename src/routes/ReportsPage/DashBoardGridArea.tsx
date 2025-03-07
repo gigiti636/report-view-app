@@ -9,7 +9,7 @@ interface DashBoardGridProps {
   containerRef: RefObject<HTMLDivElement>;
 }
 
-export const DashBoardGrid = ({
+export const DashBoardGridArea = ({
   dashboardReports,
   handleUpdateDashboardWidget,
   containerRef,
