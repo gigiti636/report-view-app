@@ -66,7 +66,7 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
                       borderRadius: 2,
                       boxShadow: 1,
                       position: 'relative',
-                      paddingTop: 3,
+                      height: '100%',
                     }}
                   >
                     <IconButton sx={{ position: 'absolute', top: 8, left: 8 }} size="small">
