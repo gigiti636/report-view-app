@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Modal } from '@/components';
 import { ReportPreview } from '@/routes/ReportsPage/ReportPreview.tsx';
 import { ReportsList } from './ReportsList.tsx';
-import { DashBoardWidget } from '@/lib/types.ts';
 import { DashBoardPrompt } from '@/routes/ReportsPage/DashboardPrompt.tsx';
 import { DashBoardGridArea } from './DashBoardGridArea.tsx'; // Import the new component
 
@@ -14,13 +13,7 @@ export const ReportsPage = () => {
   const [reportIdToView, setReportIdToView] = useState<string | null>(null);
   const [selectedReports, setSelectedReports] = useState<string[]>([]);
 
-  const [dashboardReports, setDashboardReports] = useState<DashBoardWidget[]>([]);
-
-  const handleUpdateDashboardWidget = (id: string, updatedItem: Partial<DashBoardWidget>) => {
-    setDashboardReports((prev) =>
-      prev.map((widget) => (widget.id === id ? { ...widget, ...updatedItem } : widget)),
-    );
-  };
+  const [showDraftDashboard, setShowDraftDashboard] = useState(false);
 
   const handleSelection = (id: string) => {
     setSelectedReports((prevSelected) =>
@@ -35,15 +28,14 @@ export const ReportsPage = () => {
   };
 
   const handleSentToDashboard = () => {
-    const reportToAddToDashboard = reports.filter((report) => selectedReports.includes(report.id));
-    setDashboardReports(reportToAddToDashboard.map((rep, index) => ({ ...rep, cols: 6, order: index + 1 })));
-    setSelectedReports([]);
+    setShowDraftDashboard(true);
   };
+  const reportToAddToDashboard = reports.filter((report) => selectedReports.includes(report.id));
 
   return (
     <>
       <Box sx={{ height: 'calc(100vh - 68px)', display: 'flex', bgcolor: 'background.default' }}>
-        {dashboardReports.length === 0 && (
+        {!showDraftDashboard && (
           <Paper sx={{ width: '40%', height: '100%', display: 'flex', flexDirection: 'column' }}>
             <ReportsList
               reports={reports}
@@ -72,21 +64,16 @@ export const ReportsPage = () => {
             position: 'relative',
           }}
         >
-          {dashboardReports.length > 0 && (
+          {showDraftDashboard && (
             <DashBoardGridArea
-              dashboardReports={dashboardReports}
-              handleBackToReports={() => setDashboardReports([])}
-              handleUpdateDashboardWidget={handleUpdateDashboardWidget}
+              dashboardReports={reportToAddToDashboard}
+              handleBackToReports={() => setShowDraftDashboard(false)}
             />
           )}
 
-          {dashboardReports.length === 0 && reportIdToView && (
-            <ReportPreview reportIdToView={reportIdToView} />
-          )}
+          {!showDraftDashboard && reportIdToView && <ReportPreview reportIdToView={reportIdToView} />}
 
-          {dashboardReports.length === 0 && !reportIdToView && (
-            <DashBoardPrompt hasReports={reports.length > 0} />
-          )}
+          {!showDraftDashboard && !reportIdToView && <DashBoardPrompt hasReports={reports.length > 0} />}
         </Box>
       </Box>
 

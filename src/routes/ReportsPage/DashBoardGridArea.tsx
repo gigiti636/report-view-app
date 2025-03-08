@@ -1,90 +1,104 @@
-import { Box, Breadcrumbs, Grid, IconButton, Link, Typography } from '@mui/material';
-import { DashBoardWidget, StoredReport } from '@/lib/types.ts';
+import { Box, Breadcrumbs, Link, Typography } from '@mui/material';
+import { StoredReport } from '@/lib/types.ts';
 import { Chart } from '@/components';
-import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import GridLayout from 'react-grid-layout';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+import { useState, useRef, useEffect } from 'react';
 
 interface DashBoardGridProps {
   dashboardReports: StoredReport[];
   handleBackToReports: () => void;
-  handleUpdateDashboardWidget: (_id: string, _partialStoredItem: Partial<DashBoardWidget>) => void;
 }
 
 export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: DashBoardGridProps) => {
-  const ras = [4, 4, 6, 6, 12];
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [gridWidth, setGridWidth] = useState(1200);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setGridWidth(containerRef.current.offsetWidth);
+      }
+    };
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
+  // Ensure all values are correct numbers
+  const initialLayout = dashboardReports.map((report, index) => ({
+    i: report.id.toString(),
+    x: (index % 2) * 6,
+    y: Math.floor(index / 2) * 2,
+    w: 6,
+    h: 3,
+  }));
+
+  const [layout, setLayout] = useState(initialLayout);
+
+  console.log(layout);
+  console.log(dashboardReports);
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+    <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
         <Link underline="hover" color="inherit" onClick={handleBackToReports} sx={{ cursor: 'pointer' }}>
           {'< '}Back to Reports
         </Link>
-
         <Typography color="text.primary">Draft Dashboard</Typography>
       </Breadcrumbs>
-      <Box
-        sx={{
-          flex: 1,
-          borderRadius: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Scrollable Grid */}
-          <Box
-            sx={{
-              flex: 1,
-              width: '100%',
-              overflowY: 'auto',
-              pr: 1,
-              pt: 3,
-              pb: 7,
-            }}
-          >
-            <Grid container spacing={2}>
-              {dashboardReports.map((report, index) => (
-                <Grid
-                  item
-                  xs={ras[index % ras.length]}
-                  key={report.id}
-                  sx={{ '.MuiBox-root': { padding: 4 } }}
-                >
-                  <Box
-                    sx={{
-                      bgcolor: 'background.paper',
-                      borderRadius: 2,
-                      boxShadow: 1,
-                      position: 'relative',
-                      height: '100%',
-                    }}
-                  >
-                    <IconButton sx={{ position: 'absolute', top: 8, left: 8 }} size="small">
-                      <ArrowBack />
-                    </IconButton>
-                    <IconButton sx={{ position: 'absolute', top: 8, right: 8 }} size="small">
-                      <ArrowForward />
-                    </IconButton>
 
-                    <Typography variant="h6" gutterBottom sx={{ pt: 1, pb: 2 }}>
-                      {report.question}
-                    </Typography>
-                    <Chart colData={report.values} defaultTab={report.type} type={report.type} />
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
+      <Box sx={{ flex: 1, borderRadius: 2, display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flex: 1, width: '100%', overflowY: 'auto', pr: 1, pt: 3, pb: 7 }}>
+          <GridLayout
+            className="layout"
+            layout={layout}
+            cols={12}
+            rowHeight={120}
+            width={gridWidth} // Dynamically adjust width
+            draggableHandle=".drag-handle"
+            onLayoutChange={(newLayout) => setLayout(newLayout)}
+            isResizable
+            isDraggable
+            useCSSTransforms
+          >
+            {dashboardReports.map((report) => {
+              // Find matching layout item
+              const gridItem = layout.find((l) => l.i === report.id.toString());
+              if (!gridItem) return null; // Ensure valid data
+
+              return (
+                <Box
+                  key={report.id}
+                  data-grid={{
+                    i: report.id.toString(),
+                    x: gridItem.x,
+                    y: gridItem.y,
+                    w: gridItem.w,
+                    h: gridItem.h,
+                  }}
+                  sx={{
+                    bgcolor: 'background.paper',
+                    borderRadius: 2,
+                    boxShadow: 1,
+                    position: 'relative',
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {/* Drag handle */}
+                  <Typography variant="h6" gutterBottom className="drag-handle" sx={{ cursor: 'grab' }}>
+                    {report.question}
+                  </Typography>
+
+                  {/* Chart Component */}
+                  <Chart colData={report.values} defaultTab={report.type} type={report.type} />
+                </Box>
+              );
+            })}
+          </GridLayout>
         </Box>
       </Box>
     </div>
