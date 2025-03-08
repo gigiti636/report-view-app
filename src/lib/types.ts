@@ -41,3 +41,7 @@ export type DashboardType = {
   reports: StoredReport[];
   layout: Layout[];
 };
+
+export interface ReportType extends Omit<StoredReport, 'id'> {
+  id?: string;
+}

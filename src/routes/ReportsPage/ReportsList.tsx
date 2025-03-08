@@ -1,10 +1,12 @@
 import { Box, Button, Checkbox, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { StoredReport } from '@/lib/types';
 import { useTheme } from '@mui/material/styles';
 
 interface ReportsListProps {
+  previewReportId: string | null; // Updated type to match ID format
   reports: StoredReport[];
   selectedReports: string[];
   onSelect: (_id: string) => void;
@@ -17,6 +19,7 @@ interface ReportsListProps {
 }
 
 export const ReportsList = ({
+  previewReportId,
   reports,
   selectedReports,
   onSelect,
@@ -61,7 +64,7 @@ export const ReportsList = ({
             <Button
               color={'error'}
               variant={'outlined'}
-              title={'delete selected reports'}
+              title={'Delete selected reports'}
               onClick={handleDeleteSelected}
               disabled={selectedReports.length === 0}
             >
@@ -79,37 +82,53 @@ export const ReportsList = ({
           </Typography>
         ) : (
           <List>
-            {reports.map((report) => (
-              <ListItem
-                divider
-                key={report.id}
-                secondaryAction={
-                  <>
-                    <IconButton edge="end" aria-label="view" onClick={() => onView(report.id)}>
-                      <VisibilityIcon />
-                    </IconButton>
+            {reports.map((report) => {
+              const isPreviewed = report.id === previewReportId; // Check if the report is being previewed
 
-                    <IconButton edge="end" aria-label="delete" onClick={() => onDelete(report.id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </>
-                }
-              >
-                <Checkbox
-                  edge="start"
-                  checked={selectedReports.includes(report.id)}
-                  onChange={() => onSelect(report.id)}
-                />
-                <ListItemText
-                  primary={report.question}
-                  sx={{ pl: 1, pr: 3, '& .MuiTypography-root': { fontSize: '14px' } }}
-                />
-              </ListItem>
-            ))}
+              //report.isNew
+              return (
+                <ListItem
+                  divider
+                  key={report.id}
+                  sx={{
+                    bgcolor: isPreviewed ? theme.palette.action.selected : 'inherit', // Highlight previewed item
+                    fontWeight: isPreviewed ? 'bold' : 'normal',
+                    transition: 'background 0.2s ease-in-out',
+                  }}
+                  secondaryAction={
+                    <>
+                      <IconButton edge="end" aria-label="view" onClick={() => onView(report.id)}>
+                        {isPreviewed ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </IconButton>
+
+                      <IconButton edge="end" aria-label="delete" onClick={() => onDelete(report.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
+                  }
+                >
+                  <Checkbox
+                    edge="start"
+                    checked={selectedReports.includes(report.id)}
+                    onChange={() => onSelect(report.id)}
+                  />
+                  <ListItemText
+                    primary={report.question}
+                    sx={{
+                      pl: 1,
+                      pr: 3,
+                      '& .MuiTypography-root': { fontSize: '14px' },
+                      fontWeight: isPreviewed ? 'bold' : 'normal',
+                    }}
+                  />
+                </ListItem>
+              );
+            })}
           </List>
         )}
       </Box>
 
+      {/* Dashboard Button */}
       <Box mb={3} mt={1} display={'flex'} px={2}>
         <Button
           variant="contained"

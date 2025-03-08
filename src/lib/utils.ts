@@ -30,6 +30,30 @@ export function transformAndSplitDict(originalDict: Record<string, number>): Rec
   return transformedDict;
 }
 
+/**
+ * Renames a key in an object while preserving the order of properties.
+ *
+ * @param obj - The original object.
+ * @param oldKey - The key to be renamed.
+ * @param newKey - The new key name.
+ * @returns A new object with the key renamed.
+ */
+export function renameKeyPreserveOrder<T extends Record<string, never>>(
+  obj: T,
+  oldKey: string,
+  newKey: string,
+): T {
+  const newObj = {} as T;
+  Object.keys(obj).forEach((key) => {
+    if (key === oldKey) {
+      (newObj as any)[newKey] = obj[oldKey];
+    } else {
+      (newObj[key] as T) = obj[key];
+    }
+  });
+  return newObj;
+}
+
 export function encodeData(data: string) {
   const compressed = LZString.compressToEncodedURIComponent(data);
   return compressed;

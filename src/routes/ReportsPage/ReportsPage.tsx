@@ -27,6 +27,9 @@ export const ReportsPage = () => {
 
   const handleDiscardReport = () => {
     removeReport(reportIdsToDelete);
+    if (reportIdToView && reportIdsToDelete.includes(reportIdToView)) {
+      setReportIdToView(null);
+    }
     setSelectedReports((prevSelected) => prevSelected.filter((id) => !reportIdsToDelete.includes(id)));
     setReportIdsToDelete([]);
   };
@@ -42,12 +45,13 @@ export const ReportsPage = () => {
         {!showDraftDashboard && reports.length > 0 && (
           <Paper sx={{ width: '30%', height: '100%', display: 'flex', flexDirection: 'column' }}>
             <ReportsList
+              previewReportId={reportIdToView}
               reports={reports}
               selectedReports={selectedReports}
               onClearSelection={() => setSelectedReports([])}
               onSelectAll={() => setSelectedReports(reports.map((report) => report.id))}
               onSelect={handleSelection}
-              onView={setReportIdToView}
+              onView={(_id) => (_id === reportIdToView ? setReportIdToView(null) : setReportIdToView(_id))}
               onDelete={(id) => setReportIdsToDelete([id])}
               handleDeleteSelected={() => setReportIdsToDelete(selectedReports)}
               handleSentToDashboard={handleSentToDashboard}
@@ -76,10 +80,12 @@ export const ReportsPage = () => {
           )}
 
           {!showDraftDashboard && reportIdToView && (
-            <ReportPreview reportIdToView={reportIdToView} handleClose={handleCloseReportPreview} />
+            <ReportPreview reportIdToView={reportIdToView} handleBackButtonClick={handleCloseReportPreview} />
           )}
 
-          {!showDraftDashboard && !reportIdToView && <DashBoardPrompt hasReports={reports.length > 0} />}
+          {!showDraftDashboard && !reportIdToView && (
+            <DashBoardPrompt hasReports={reports.length > 0} handleCreated={setReportIdToView} />
+          )}
         </Box>
       </Box>
 
