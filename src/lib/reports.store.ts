@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist, devtools } from 'zustand/middleware';
-import type { StoredReport } from '@/lib/types.ts';
+import { DashboardType, StoredReport } from '@/lib/types.ts';
 import type { Layout } from 'react-grid-layout';
 
 interface ReportStore {
@@ -10,7 +10,7 @@ interface ReportStore {
   removeReport: (_id: string | string[]) => void;
   updateReport: (_id: string, _updatedReport: Partial<StoredReport>) => void;
   clearReports: () => void;
-  addDashboard: (_layout: Layout[], _reports: StoredReport[]) => void;
+  addDashboard: (_dashboard: DashboardType) => void;
   clearDashboard: () => void;
 }
 
@@ -55,10 +55,10 @@ export const useReportStore = create<ReportStore>()(
 
         clearReports: () => set({ reports: [] }, false, 'CLEAR_REPORTS'),
 
-        addDashboard: (_layout, _reports) =>
+        addDashboard: (_dashboard) =>
           set(
             () => ({
-              dashboard: { layout: _layout, reports: _reports },
+              dashboard: { layout: _dashboard.layout, reports: _dashboard.reports },
             }),
             false,
             'ADD_DASHBOARD',

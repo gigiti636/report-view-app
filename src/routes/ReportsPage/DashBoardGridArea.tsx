@@ -46,7 +46,7 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
   const [showSaveConformation, setSaveConformation] = useState(false);
 
   const handleSaveDashboard = () => {
-    addDashboard(layout, dashboardReports);
+    addDashboard({ layout, reports: dashboardReports });
     navigate(routes.dashboard);
   };
 
@@ -59,7 +59,7 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
         closeModal={() => setSaveConformation(false)}
         callToAction={handleSaveDashboard}
       >
-        Saving dashboard will overwrite existing dashboard
+        Existing dashboard will be lost
       </Modal>
 
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -116,10 +116,12 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
                       p: 2,
                       display: 'flex',
                       flexDirection: 'column',
+                      cursor: 'grab',
                     }}
+                    className="drag-handle"
                   >
                     {/* Drag handle */}
-                    <Typography variant="h6" gutterBottom className="drag-handle" sx={{ cursor: 'grab' }}>
+                    <Typography variant="h6" gutterBottom>
                       {report.question}
                     </Typography>
 

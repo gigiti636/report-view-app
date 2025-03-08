@@ -1,4 +1,5 @@
 import type { GridColDef } from '@mui/x-data-grid';
+import { Layout } from 'react-grid-layout';
 
 export type RowObject = {
   id: number;
@@ -35,3 +36,8 @@ export enum ChartType {
 }
 
 /* eslint-enable */
+
+export type DashboardType = {
+  reports: StoredReport[];
+  layout: Layout[];
+};

@@ -1,12 +1,16 @@
-import { useReportStore } from '@/lib/reports.store.ts';
-import { Box, Button, Typography } from '@mui/material';
-import { Chart, Modal } from '@/components';
+import { Box, Typography } from '@mui/material';
+import { Chart } from '@/components';
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useEffect, useRef, useState } from 'react';
+import type { DashboardType } from '@/lib/types.ts';
 
-export const Dashboard = () => {
+interface DashboardProp {
+  dashboard: DashboardType;
+}
+
+export const Dashboard = ({ dashboard }: DashboardProp) => {
   const [gridWidth, setGridWidth] = useState(1200);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -21,41 +25,11 @@ export const Dashboard = () => {
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  const { dashboard, clearDashboard } = useReportStore();
-
-  const [showDeleteDashboard, setShowDeleteDashboard] = useState(false);
-
-  if (!dashboard) {
-    return (
-      <Box display={'flex'} alignItems={'center'} justifyContent={'center'} mt={10}>
-        No dashboard found
-      </Box>
-    );
-  }
-
   const { layout, reports } = dashboard;
 
   return (
     <>
-      <Modal
-        header={'Are you sure you want to delete dashboard ?'}
-        open={showDeleteDashboard}
-        onClose={() => setShowDeleteDashboard(false)}
-        closeModal={() => setShowDeleteDashboard(false)}
-        callToActionIsDelete={true}
-        callToActionLabel={'Delete'}
-        callToAction={clearDashboard}
-      >
-        Are you sure you want to disregard this report from reports?
-      </Modal>
-
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
-        <Box mt={2} mx={2} display={'flex'} justifyContent={'end'}>
-          <Button variant={'outlined'} color={'error'} onClick={() => setShowDeleteDashboard(true)}>
-            Delete Dashboard
-          </Button>
-        </Box>
-
         <Box sx={{ flex: 1, borderRadius: 2, display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ flex: 1, width: '100%', overflowY: 'auto', pr: 1, pt: 3, pb: 7 }}>
             <GridLayout
@@ -93,7 +67,7 @@ export const Dashboard = () => {
                       flexDirection: 'column',
                     }}
                   >
-                    <Typography variant="h6" gutterBottom className="drag-handle" sx={{ cursor: 'grab' }}>
+                    <Typography variant="h6" gutterBottom>
                       {rep.question}
                     </Typography>
 
