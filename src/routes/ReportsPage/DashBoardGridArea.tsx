@@ -6,6 +6,8 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useState, useRef, useEffect } from 'react';
 import { useReportStore } from '@/lib/reports.store.ts';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '@/routes/AppRouter.tsx';
 
 interface DashBoardGridProps {
   dashboardReports: StoredReport[];
@@ -39,9 +41,11 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
   const [layout, setLayout] = useState(initialLayout);
 
   const { addDashboard } = useReportStore();
+  const navigate = useNavigate();
 
   const handleSaveDashboard = () => {
     addDashboard(layout, dashboardReports);
+    navigate(routes.dashboard);
   };
 
   return (
@@ -66,7 +70,7 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
             layout={layout}
             cols={12}
             rowHeight={120}
-            width={gridWidth} // Dynamically adjust width
+            width={gridWidth}
             draggableHandle=".drag-handle"
             onLayoutChange={(newLayout) => setLayout(newLayout)}
             isResizable

@@ -42,6 +42,18 @@ export const Header = () => {
           >
             Reports ({reports.length})
           </NavLink>
+
+          <NavLink
+            to={routes.dashboard}
+            style={({ isActive }) => ({
+              fontWeight: isActive ? 'bold' : 'normal',
+              textDecoration: isActive ? 'underline' : 'none',
+              color: 'white',
+              fontSize: 'large',
+            })}
+          >
+            My Dashboard
+          </NavLink>
         </Box>
 
         {/* Theme Toggle Button */}
