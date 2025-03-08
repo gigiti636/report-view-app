@@ -24,7 +24,7 @@ export const useReportStore = create<ReportStore>()(
         addReports: (_newReports) =>
           set(
             (state) => ({
-              reports: [...state.reports, ..._newReports],
+              reports: [..._newReports, ...state.reports],
             }),
             false,
             'ADD_REPORTS',

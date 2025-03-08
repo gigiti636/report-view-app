@@ -109,6 +109,7 @@ export const ReportEdit = ({
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           margin="normal"
+          autoFocus={question.length === 0}
         />
         <FormControl fullWidth margin="normal">
           <InputLabel>Default Chart</InputLabel>
