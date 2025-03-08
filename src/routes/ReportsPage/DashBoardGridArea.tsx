@@ -63,8 +63,8 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
       </Modal>
 
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
-        <div>
-          <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
+        <Box display={'flex'} gap={4} alignItems={'center'}>
+          <Breadcrumbs aria-label="breadcrumb" sx={{ flexGrow: 1 }}>
             <Link underline="hover" color="inherit" onClick={handleBackToReports} sx={{ cursor: 'pointer' }}>
               {'< '}Back to Reports
             </Link>
@@ -77,7 +77,7 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
           >
             Save Dashboard
           </Button>
-        </div>
+        </Box>
 
         <Box sx={{ flex: 1, borderRadius: 2, display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ flex: 1, width: '100%', overflowY: 'auto', pr: 1, pt: 3, pb: 7 }}>
