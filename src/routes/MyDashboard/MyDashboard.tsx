@@ -4,6 +4,7 @@ import { Dashboard, Modal } from '@/components';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useRef, useState } from 'react';
+import { encodeData } from '@/lib/utils.ts';
 
 export const MyDashboard = () => {
   const { clearDashboard, dashboard } = useReportStore();
@@ -25,9 +26,13 @@ export const MyDashboard = () => {
   };
 
   const shareDashboard = () => {
-    const encodedDashboard = encodeURIComponent(JSON.stringify(dashboard));
-    const shareUrl = `${window.location.origin}/preview-dashboard?data=${encodedDashboard}&title=${textAreaRef.current?.['value']}`;
-    navigator.clipboard.writeText(shareUrl);
+    const encodedDashboard = encodeData(JSON.stringify(dashboard));
+    const encodedTitle = encodeData(textAreaRef.current?.['value'] || '');
+    const shareUrl = `${window.location.origin}/preview-dashboard?data=${encodedDashboard}&title=${encodedTitle}`;
+    navigator.clipboard
+      .writeText(shareUrl)
+      .then(() => console.log('Dashboard link copied successfully!'))
+      .catch((err) => console.error('Failed to copy link:', err));
     setShowShareDashboard(false);
   };
 

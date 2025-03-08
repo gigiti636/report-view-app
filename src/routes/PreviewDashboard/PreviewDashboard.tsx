@@ -2,11 +2,12 @@ import { useSearchParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 import { Dashboard } from '@/components';
+import { decodeData } from '@/lib/utils.ts';
 
 export const PreviewDashboard = () => {
   const [searchParams] = useSearchParams();
   const dashboardData = searchParams.get('data');
-  const dashboardTitle = searchParams.get('title');
+  const dashboardTitle = searchParams.get('title') || '';
 
   if (!dashboardData) {
     return (
@@ -17,21 +18,24 @@ export const PreviewDashboard = () => {
   }
 
   try {
-    const dashboard = JSON.parse(decodeURIComponent(dashboardData));
+    const dashboard = JSON.parse(decodeData(dashboardData));
+    const title = dashboardTitle ? decodeData(dashboardTitle) : '';
     return (
       <>
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: 'bold',
-            color: 'text.secondary',
-            letterSpacing: 1.2,
-            mt: 3,
-            mx: 2,
-          }}
-        >
-          {dashboardTitle}
-        </Typography>
+        {title && (
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 'bold',
+              color: 'text.secondary',
+              letterSpacing: 1.2,
+              mt: 3,
+              mx: 2,
+            }}
+          >
+            {title}
+          </Typography>
+        )}
         <Dashboard dashboard={dashboard} />;
       </>
     );

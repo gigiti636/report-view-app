@@ -1,6 +1,7 @@
 import type { StackProps, SxProps } from '@mui/material';
 import { Button, Stack } from '@mui/material';
 import { MouseEventHandler } from 'react';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 interface ModalActionFooterProps extends StackProps {
   cancelAction?: MouseEventHandler | undefined;
@@ -48,6 +49,8 @@ const ModalActionFooter = ({
           variant={'contained'}
           sx={{ fontSize: (theme) => theme.typography.fontSize * 1 * 1.15 }}
         >
+          {action.toLowerCase().includes('copy') && <ContentCopyIcon sx={{ mr: 1 }} />}
+
           {action}
         </Button>
       )}

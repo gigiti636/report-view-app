@@ -1,3 +1,5 @@
+import LZString from 'lz-string';
+
 export function transformAndSplitDict(originalDict: Record<string, number>): Record<string, number> {
   const transformedDict: Record<string, number> = {};
 
@@ -26,4 +28,14 @@ export function transformAndSplitDict(originalDict: Record<string, number>): Rec
   });
 
   return transformedDict;
+}
+
+export function encodeData(data: string) {
+  const compressed = LZString.compressToEncodedURIComponent(data);
+  return compressed;
+}
+
+export function decodeData(encodedData: string) {
+  const decompressed = LZString.decompressFromEncodedURIComponent(encodedData);
+  return decompressed || '';
 }
