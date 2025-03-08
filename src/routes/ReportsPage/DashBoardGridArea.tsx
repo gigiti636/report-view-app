@@ -1,10 +1,11 @@
-import { Box, Breadcrumbs, Link, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Button, Link, Typography } from '@mui/material';
 import { StoredReport } from '@/lib/types.ts';
 import { Chart } from '@/components';
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useState, useRef, useEffect } from 'react';
+import { useReportStore } from '@/lib/reports.store.ts';
 
 interface DashBoardGridProps {
   dashboardReports: StoredReport[];
@@ -37,17 +38,26 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
 
   const [layout, setLayout] = useState(initialLayout);
 
-  console.log(layout);
-  console.log(dashboardReports);
+  const { addDashboard } = useReportStore();
+
+  const handleSaveDashboard = () => {
+    addDashboard(layout, dashboardReports);
+  };
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
-        <Link underline="hover" color="inherit" onClick={handleBackToReports} sx={{ cursor: 'pointer' }}>
-          {'< '}Back to Reports
-        </Link>
-        <Typography color="text.primary">Draft Dashboard</Typography>
-      </Breadcrumbs>
+      <div>
+        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
+          <Link underline="hover" color="inherit" onClick={handleBackToReports} sx={{ cursor: 'pointer' }}>
+            {'< '}Back to Reports
+          </Link>
+          <Typography color="text.primary">Draft Dashboard</Typography>
+        </Breadcrumbs>
+
+        <Button variant={'contained'} onClick={handleSaveDashboard}>
+          Save Dashboard
+        </Button>
+      </div>
 
       <Box sx={{ flex: 1, borderRadius: 2, display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ flex: 1, width: '100%', overflowY: 'auto', pr: 1, pt: 3, pb: 7 }}>

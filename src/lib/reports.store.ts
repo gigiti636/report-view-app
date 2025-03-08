@@ -1,20 +1,25 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist, devtools } from 'zustand/middleware';
 import type { StoredReport } from '@/lib/types.ts';
+import type { Layout } from 'react-grid-layout';
 
 interface ReportStore {
   reports: StoredReport[];
+  dashboard: { layout: Layout[]; reports: StoredReport[] } | null;
   addReports: (_newReports: StoredReport[]) => void;
   removeReport: (_id: string | string[]) => void;
   updateReport: (_id: string, _updatedReport: Partial<StoredReport>) => void;
   clearReports: () => void;
+  addDashboard: (_layout: Layout[], _reports: StoredReport[]) => void;
 }
 
 export const useReportStore = create<ReportStore>()(
   devtools(
     persist(
       (set) => ({
-        reports: [], // Initial state
+        reports: [],
+        dashboard: null,
+
         addReports: (_newReports) =>
           set(
             (state) => ({
@@ -48,6 +53,15 @@ export const useReportStore = create<ReportStore>()(
           ),
 
         clearReports: () => set({ reports: [] }, false, 'CLEAR_REPORTS'),
+
+        addDashboard: (_layout, _reports) =>
+          set(
+            () => ({
+              dashboard: { layout: _layout, reports: _reports },
+            }),
+            false,
+            'ADD_DASHBOARD',
+          ),
       }),
       {
         name: 'report-storage', // LocalStorage key
