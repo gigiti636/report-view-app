@@ -1,35 +1,16 @@
-import { Box, Breadcrumbs, Grid, Link, Typography } from '@mui/material';
-import { RefObject, useEffect, useRef } from 'react';
+import { Box, Breadcrumbs, Grid, IconButton, Link, Typography } from '@mui/material';
 import { DashBoardWidget, StoredReport } from '@/lib/types.ts';
 import { Chart } from '@/components';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 
 interface DashBoardGridProps {
   dashboardReports: StoredReport[];
   handleBackToReports: () => void;
   handleUpdateDashboardWidget: (_id: string, _partialStoredItem: Partial<DashBoardWidget>) => void;
-  containerRef: RefObject<HTMLDivElement>;
 }
 
-export const DashBoardGridArea = ({
-  dashboardReports,
-  handleBackToReports,
-  containerRef,
-}: DashBoardGridProps) => {
-  const resizeObserver = useRef<ResizeObserver | null>(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Cleanup observer on unmount
-    return () => {
-      if (resizeObserver.current) {
-        resizeObserver.current.disconnect();
-      }
-    };
-  }, [containerRef]);
-
+export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: DashBoardGridProps) => {
   const ras = [4, 4, 6, 6, 12];
-  const ran = [8, 7, 6, 5, 4, 3];
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -76,7 +57,6 @@ export const DashBoardGridArea = ({
                 <Grid
                   item
                   xs={ras[index % ras.length]}
-                  order={ran[index % ras.length]}
                   key={report.id}
                   sx={{ '.MuiBox-root': { padding: 4 } }}
                 >
@@ -85,8 +65,17 @@ export const DashBoardGridArea = ({
                       bgcolor: 'background.paper',
                       borderRadius: 2,
                       boxShadow: 1,
+                      position: 'relative',
+                      paddingTop: 3,
                     }}
                   >
+                    <IconButton sx={{ position: 'absolute', top: 8, left: 8 }} size="small">
+                      <ArrowBack />
+                    </IconButton>
+                    <IconButton sx={{ position: 'absolute', top: 8, right: 8 }} size="small">
+                      <ArrowForward />
+                    </IconButton>
+
                     <Typography variant="h6" gutterBottom sx={{ pt: 1, pb: 2 }}>
                       {report.question}
                     </Typography>

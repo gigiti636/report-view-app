@@ -1,6 +1,6 @@
 import { Box, Paper } from '@mui/material';
 import { useReportStore } from '@/lib/reports.store.ts';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Modal } from '@/components';
 import { ReportPreview } from '@/routes/ReportsPage/ReportPreview.tsx';
 import { ReportsList } from './ReportsList.tsx';
@@ -21,8 +21,6 @@ export const ReportsPage = () => {
       prev.map((widget) => (widget.id === id ? { ...widget, ...updatedItem } : widget)),
     );
   };
-
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleSelection = (id: string) => {
     setSelectedReports((prevSelected) =>
@@ -62,7 +60,6 @@ export const ReportsPage = () => {
         )}
 
         <Box
-          ref={containerRef}
           sx={{
             flex: 1,
             px: 2,
@@ -79,7 +76,6 @@ export const ReportsPage = () => {
             <DashBoardGridArea
               dashboardReports={dashboardReports}
               handleBackToReports={() => setDashboardReports([])}
-              containerRef={containerRef}
               handleUpdateDashboardWidget={handleUpdateDashboardWidget}
             />
           )}
