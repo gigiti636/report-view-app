@@ -41,7 +41,7 @@ export const ReportEdit = ({
 
   const handleValueChange = useCallback((key: string, newValue: string) => {
     const parsedValue = newValue === '' ? '' : Number(newValue);
-    if (parsedValue === '' || (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 100)) {
+    if (parsedValue === '' || (!isNaN(parsedValue) && parsedValue >= 0)) {
       setValues((prev) => ({
         ...prev,
         [key]: parsedValue,
@@ -83,8 +83,8 @@ export const ReportEdit = ({
               size="small"
               fullWidth
               variant="outlined"
-              type="text"
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 0 }}
+              type="number"
+              inputProps={{ min: 0, max: 9999 }}
               value={value}
               onChange={(e) => handleValueChange(key, e.target.value)}
             />

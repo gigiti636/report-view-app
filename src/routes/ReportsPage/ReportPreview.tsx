@@ -1,8 +1,8 @@
-import { Chart, EditableText, ReportEdit } from '@/components';
+import { Chart, ReportEdit } from '@/components';
 import { useReportStore } from '@/lib/reports.store.ts';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import SettingsIcon from '@mui/icons-material/Settings';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useState } from 'react';
 
 interface ReportPreviewModalProps {
@@ -30,39 +30,52 @@ export const ReportPreview = ({ reportIdToView, handleBackButtonClick }: ReportP
     >
       <Box mb={3} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
         {/* Close Button */}
-        <Box
-          display={'inline-flex'}
-          p={2}
-          alignItems={'center'}
-          onClick={editReportMode ? () => setEditReportMode(false) : handleBackButtonClick}
-          color={'text.secondary'}
-          fontWeight={'bold'}
-          sx={{ cursor: 'pointer' }}
-        >
-          <ArrowBackIosIcon />
+        <Box display={'flex'} alignItems={'center'}>
+          <Box
+            display={'inline-flex'}
+            p={2}
+            alignItems={'center'}
+            onClick={editReportMode ? () => setEditReportMode(false) : handleBackButtonClick}
+            color={'text.secondary'}
+            fontWeight={'bold'}
+            sx={{ cursor: 'pointer' }}
+          >
+            <IconButton title={'Go back'}>
+              <ArrowBackIosIcon />
+            </IconButton>
+          </Box>
+          <Typography variant={'h5'} fontWeight={'bold'} color={'primary.main'}>
+            Report Preview
+          </Typography>
+          {/* Edit Button */}
+          {!editReportMode && (
+            <IconButton onClick={() => setEditReportMode(true)} title={'Edit Report'}>
+              <EditOutlinedIcon />
+            </IconButton>
+          )}
         </Box>
-
-        {/* Edit Button */}
-        {!editReportMode && (
-          <IconButton onClick={() => setEditReportMode(true)}>
-            <SettingsIcon />
-          </IconButton>
-        )}
       </Box>
 
       {!editReportMode ? (
         <>
           <Box pb={6}>
-            <EditableText
-              text={report.question}
-              onSave={(newValue) => updateReport(report.id, { question: newValue })}
+            <Typography variant={'h6'} color={'text.secondary'}>
+              Question:
+            </Typography>
+            <Typography color={'text.primary'} variant={'body2'} fontWeight={'500'}>
+              {report.question}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant={'h6'} color={'text.secondary'}>
+              Default Chart:
+            </Typography>
+            <Chart
+              colData={report.values}
+              type={report.type}
+              handleUpdateChartType={(newType) => updateReport(report.id, { type: newType })}
             />
           </Box>
-          <Chart
-            colData={report.values}
-            type={report.type}
-            handleUpdateChartType={(newType) => updateReport(report.id, { type: newType })}
-          />
         </>
       ) : (
         <>
