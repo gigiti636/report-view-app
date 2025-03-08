@@ -6,6 +6,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import ThemeContext from '@/theme/context.ts';
 import { routes } from '@/routes/AppRouter.tsx';
 import { useReportStore } from '@/lib/reports.store.ts';
+import { Assessment, Dashboard } from '@mui/icons-material';
 
 export const Header = () => {
   const { toggleTheme, currentTheme } = useContext(ThemeContext);
@@ -30,9 +31,12 @@ export const Header = () => {
                 textDecoration: isActive ? 'underline' : 'none',
                 color: 'white',
                 fontSize: 'large',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
               })}
             >
-              Reports ({reports.length})
+              <Assessment /> Reports ({reports.length})
             </NavLink>
 
             <NavLink
@@ -42,9 +46,12 @@ export const Header = () => {
                 textDecoration: isActive ? 'underline' : 'none',
                 color: 'white',
                 fontSize: 'large',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
               })}
             >
-              My Dashboard
+              <Dashboard /> My Dashboard
             </NavLink>
           </Box>
         ) : (

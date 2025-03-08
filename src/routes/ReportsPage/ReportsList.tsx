@@ -29,6 +29,14 @@ export const ReportsList = ({
 }: ReportsListProps) => {
   const theme = useTheme();
 
+  const handleHeaderCheckboxClick = () => {
+    if (selectedReports.length === reports.length) {
+      onClearSelection();
+    } else {
+      onSelectAll();
+    }
+  };
+
   return (
     <>
       {/*  Fixed Control Section */}
@@ -41,38 +49,15 @@ export const ReportsList = ({
       >
         <Box display="flex" flexDirection={'column'}>
           <Box display="flex" alignItems="center" gap="10px">
-            <Typography variant="body2" flexGrow={1}>
+            <Checkbox
+              indeterminate={selectedReports.length > 0 && selectedReports.length < reports.length}
+              checked={selectedReports.length === reports.length}
+              onClick={handleHeaderCheckboxClick}
+            />
+            <Typography variant="body1" flexGrow={1} fontWeight={'bold'}>
               Selected: {selectedReports.length}
             </Typography>
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={onClearSelection}
-              disabled={selectedReports.length === 0}
-              sx={{
-                color: theme.palette.mode === 'dark' ? 'white' : 'inherit',
-                borderColor: theme.palette.mode === 'dark' ? 'grey.600' : 'inherit',
-                '&:hover': {
-                  borderColor: theme.palette.mode === 'dark' ? 'grey.400' : 'inherit',
-                },
-              }}
-            >
-              Clear
-            </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={onSelectAll}
-              sx={{
-                color: theme.palette.mode === 'dark' ? 'white' : 'inherit',
-                borderColor: theme.palette.mode === 'dark' ? 'grey.600' : 'inherit',
-                '&:hover': {
-                  borderColor: theme.palette.mode === 'dark' ? 'grey.400' : 'inherit',
-                },
-              }}
-            >
-              Select All
-            </Button>
+
             <Button
               color={'error'}
               variant={'outlined'}
