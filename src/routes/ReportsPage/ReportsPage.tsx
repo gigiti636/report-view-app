@@ -5,7 +5,7 @@ import { Modal } from '@/components';
 import { ReportPreview } from '@/routes/ReportsPage/ReportPreview.tsx';
 import { ReportsList } from './ReportsList.tsx';
 import { DashBoardPrompt } from '@/routes/ReportsPage/DashboardPrompt.tsx';
-import { DashBoardGridArea } from './DashBoardGridArea.tsx'; // Import the new component
+import { DashBoardGridArea } from './DashBoardGridArea.tsx';
 
 export const ReportsPage = () => {
   const { reports, removeReport } = useReportStore();
@@ -14,6 +14,10 @@ export const ReportsPage = () => {
   const [selectedReports, setSelectedReports] = useState<string[]>([]);
 
   const [showDraftDashboard, setShowDraftDashboard] = useState(false);
+
+  const handleCloseReportPreview = () => {
+    setReportIdToView(null);
+  };
 
   const handleSelection = (id: string) => {
     setSelectedReports((prevSelected) =>
@@ -35,8 +39,8 @@ export const ReportsPage = () => {
   return (
     <>
       <Box sx={{ height: 'calc(100vh - 68px)', display: 'flex', bgcolor: 'background.default' }}>
-        {!showDraftDashboard && (
-          <Paper sx={{ width: '40%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+        {!showDraftDashboard && reports.length > 0 && (
+          <Paper sx={{ width: '30%', height: '100%', display: 'flex', flexDirection: 'column' }}>
             <ReportsList
               reports={reports}
               selectedReports={selectedReports}
@@ -71,7 +75,9 @@ export const ReportsPage = () => {
             />
           )}
 
-          {!showDraftDashboard && reportIdToView && <ReportPreview reportIdToView={reportIdToView} />}
+          {!showDraftDashboard && reportIdToView && (
+            <ReportPreview reportIdToView={reportIdToView} handleClose={handleCloseReportPreview} />
+          )}
 
           {!showDraftDashboard && !reportIdToView && <DashBoardPrompt hasReports={reports.length > 0} />}
         </Box>

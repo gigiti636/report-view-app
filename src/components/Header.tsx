@@ -24,18 +24,6 @@ export const Header = () => {
         {!isPreviewDashboard ? (
           <Box sx={{ display: 'flex', gap: 4, flexGrow: 1, px: 2, justifyContent: 'left' }}>
             <NavLink
-              to={routes.main}
-              style={({ isActive }) => ({
-                fontWeight: isActive ? 'bold' : 'normal',
-                textDecoration: isActive ? 'underline' : 'none',
-                color: 'white',
-                fontSize: 'large',
-              })}
-            >
-              Create Reports
-            </NavLink>
-
-            <NavLink
               to={routes.reports}
               style={({ isActive }) => ({
                 fontWeight: isActive ? 'bold' : 'normal',

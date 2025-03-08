@@ -1,12 +1,14 @@
 import { Chart, EditableText } from '@/components';
 import { useReportStore } from '@/lib/reports.store.ts';
 import { Box } from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 interface ReportPreviewModalProps {
   reportIdToView: string | null;
+  handleClose: () => void;
 }
 
-export const ReportPreview = ({ reportIdToView }: ReportPreviewModalProps) => {
+export const ReportPreview = ({ reportIdToView, handleClose }: ReportPreviewModalProps) => {
   const { reports, updateReport } = useReportStore();
 
   const report = reports.find((report) => report.id === reportIdToView)!;
@@ -22,6 +24,20 @@ export const ReportPreview = ({ reportIdToView }: ReportPreviewModalProps) => {
       display={'flex'}
       flexDirection={'column'}
     >
+      <Box mb={3}>
+        <Box
+          display={'inline-flex'}
+          p={2}
+          alignItems={'center'}
+          onClick={handleClose}
+          color={'text.secondary'}
+          fontWeight={'bold'}
+          sx={{ cursor: 'pointer' }}
+        >
+          <ArrowBackIosIcon />
+          Close preview
+        </Box>
+      </Box>
       <Box pb={6}>
         <EditableText
           text={report.question}

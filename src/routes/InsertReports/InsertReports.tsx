@@ -1,8 +1,8 @@
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { FileDataType, ReportData } from '@/lib/types.ts';
 
-import { default as Header } from './CreateReportsHeader.tsx';
+import { default as Header } from './InsertReportsHeader.tsx';
 import { FileParser } from './FileParser';
 import { DataTableEditor } from './DataTableEditor';
 import { ReportsPreview } from './ReportsPreview';
@@ -17,11 +17,11 @@ export enum ViewModeType {
 
 export const titleMapping: Record<ViewModeType, string> = {
   [ViewModeType.FileParser]: 'Upload xlsx file to begin!',
-  [ViewModeType.DataEditor]: 'Edit Data: finish editing to view reports',
-  [ViewModeType.Report]: 'Reports Page: preview and save!',
+  [ViewModeType.DataEditor]: 'Edit Data',
+  [ViewModeType.Report]: 'Preview and save!',
 };
 
-export function CreateReports() {
+export function InsertReports() {
   const [data, setData] = useState<FileDataType | null>(null);
   const [dataTransformed, setDataTransformed] = useState<ReportData | null>(null);
 
@@ -44,28 +44,37 @@ export function CreateReports() {
   }, [viewMode]);
 
   return (
-    <Box component={'main'}>
-      <Header
-        title={titleMapping[viewMode]}
-        showPrevStep={viewMode !== ViewModeType.FileParser}
-        goPrevious={handlerHeaderBack}
-      />
-
-      {viewMode === ViewModeType.FileParser && <FileParser onFileParsed={(data) => setData(data)} />}
-
-      {viewMode === ViewModeType.DataEditor && data && (
-        <DataTableEditor data={data} setTransformedData={(data: ReportData) => setDataTransformed(data)} />
-      )}
-
-      {dataTransformed && viewMode === ViewModeType.Report && (
-        <ReportsPreview
-          transformedData={dataTransformed}
-          handleClear={() => {
-            setDataTransformed(null);
-            setData(null);
-          }}
+    <Box p={2} bgcolor={'background.default'}>
+      <Paper
+        sx={{
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          borderRadius: 2,
+        }}
+      >
+        <Header
+          title={titleMapping[viewMode]}
+          showPrevStep={viewMode !== ViewModeType.FileParser}
+          goPrevious={handlerHeaderBack}
         />
-      )}
+
+        {viewMode === ViewModeType.FileParser && <FileParser onFileParsed={(data) => setData(data)} />}
+
+        {viewMode === ViewModeType.DataEditor && data && (
+          <DataTableEditor data={data} setTransformedData={(data: ReportData) => setDataTransformed(data)} />
+        )}
+
+        {dataTransformed && viewMode === ViewModeType.Report && (
+          <ReportsPreview
+            transformedData={dataTransformed}
+            handleClear={() => {
+              setDataTransformed(null);
+              setData(null);
+            }}
+          />
+        )}
+      </Paper>
     </Box>
   );
 }

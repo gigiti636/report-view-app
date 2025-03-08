@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Checkbox, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { StoredReport } from '@/lib/types';
@@ -49,9 +39,9 @@ export const ReportsList = ({
           borderBottom: `2px solid ${theme.palette.divider}`,
         }}
       >
-        <Box my={1} display="flex" flexDirection={'column'} gap={'12px'}>
+        <Box display="flex" flexDirection={'column'}>
           <Box display="flex" alignItems="center" gap="10px">
-            <Typography variant="body1" flexGrow={1}>
+            <Typography variant="body2" flexGrow={1}>
               Selected: {selectedReports.length}
             </Typography>
             <Button
@@ -83,25 +73,6 @@ export const ReportsList = ({
             >
               Select All
             </Button>
-          </Box>
-
-          <Stack direction={'row'} gap={3}>
-            <Button
-              variant="contained"
-              size="small"
-              color="success"
-              disabled={selectedReports.length === 0}
-              onClick={handleSentToDashboard}
-              sx={{
-                flex: 1,
-                bgcolor: theme.palette.success.main,
-                '&:hover': {
-                  bgcolor: theme.palette.success.dark,
-                },
-              }}
-            >
-              Create Dashboard
-            </Button>
             <Button
               color={'error'}
               variant={'outlined'}
@@ -111,7 +82,7 @@ export const ReportsList = ({
             >
               Delete selected
             </Button>
-          </Stack>
+          </Box>
         </Box>
       </Box>
 
@@ -152,6 +123,25 @@ export const ReportsList = ({
             ))}
           </List>
         )}
+      </Box>
+
+      <Box mb={3} mt={1} display={'flex'} px={2}>
+        <Button
+          variant="contained"
+          size="medium"
+          color="success"
+          disabled={selectedReports.length === 0}
+          onClick={handleSentToDashboard}
+          sx={{
+            flex: 1,
+            bgcolor: theme.palette.success.main,
+            '&:hover': {
+              bgcolor: theme.palette.success.dark,
+            },
+          }}
+        >
+          Create Dashboard
+        </Button>
       </Box>
     </>
   );

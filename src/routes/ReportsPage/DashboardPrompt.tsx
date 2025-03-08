@@ -10,7 +10,7 @@ export const DashBoardPrompt: React.FC<DashBoardPromptProps> = ({ hasReports }: 
   const navigate = useNavigate();
 
   const handleRedirect = () => {
-    navigate(routes.main);
+    navigate(routes.insertReports);
   };
 
   return (
@@ -29,20 +29,27 @@ export const DashBoardPrompt: React.FC<DashBoardPromptProps> = ({ hasReports }: 
           {!hasReports ? 'No reports found' : 'Select reports and'}
         </Typography>
 
-        {!hasReports ? (
+        {hasReports && (
+          <>
+            <Typography variant="h5" color="info.main">
+              And create a Dashboard!
+            </Typography>
+            <Typography variant="subtitle1" color="info.main">
+              or
+            </Typography>
+          </>
+        )}
+
+        <div>
           <Button
             variant="text"
             color="primary"
             onClick={handleRedirect}
             sx={{ textDecoration: 'underline!important' }}
           >
-            Create Reports
+            Insert Reports
           </Button>
-        ) : (
-          <Typography variant="h5" color="info.main">
-            And create a Dashboard!
-          </Typography>
-        )}
+        </div>
       </Box>
     </Paper>
   );

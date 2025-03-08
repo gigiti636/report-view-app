@@ -15,7 +15,7 @@ const MainHeader = ({ title, showPrevStep, goPrevious }: HeaderProps) => {
         </IconButton>
       )}
 
-      <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} textAlign={'left'}>
+      <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} textAlign={'center'}>
         {title}
       </Typography>
     </Box>
