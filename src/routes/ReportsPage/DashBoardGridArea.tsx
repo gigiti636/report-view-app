@@ -1,6 +1,6 @@
 import { Box, Breadcrumbs, Button, Link, Typography } from '@mui/material';
 import { StoredReport } from '@/lib/types.ts';
-import { Chart } from '@/components';
+import { Chart, Modal } from '@/components';
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -40,8 +40,10 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
 
   const [layout, setLayout] = useState(initialLayout);
 
-  const { addDashboard } = useReportStore();
+  const { addDashboard, dashboard } = useReportStore();
   const navigate = useNavigate();
+
+  const [showSaveConformation, setSaveConformation] = useState(false);
 
   const handleSaveDashboard = () => {
     addDashboard(layout, dashboardReports);
@@ -49,72 +51,87 @@ export const DashBoardGridArea = ({ dashboardReports, handleBackToReports }: Das
   };
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <div>
-        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
-          <Link underline="hover" color="inherit" onClick={handleBackToReports} sx={{ cursor: 'pointer' }}>
-            {'< '}Back to Reports
-          </Link>
-          <Typography color="text.primary">Draft Dashboard</Typography>
-        </Breadcrumbs>
+    <>
+      <Modal
+        header={'Save new Dashboard'}
+        open={showSaveConformation}
+        onClose={() => setSaveConformation(false)}
+        closeModal={() => setSaveConformation(false)}
+        callToAction={handleSaveDashboard}
+      >
+        Saving dashboard will overwrite existing dashboard
+      </Modal>
 
-        <Button variant={'contained'} onClick={handleSaveDashboard}>
-          Save Dashboard
-        </Button>
-      </div>
+      <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
+        <div>
+          <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
+            <Link underline="hover" color="inherit" onClick={handleBackToReports} sx={{ cursor: 'pointer' }}>
+              {'< '}Back to Reports
+            </Link>
+            <Typography color="text.primary">Draft Dashboard</Typography>
+          </Breadcrumbs>
 
-      <Box sx={{ flex: 1, borderRadius: 2, display: 'flex', flexDirection: 'column' }}>
-        <Box sx={{ flex: 1, width: '100%', overflowY: 'auto', pr: 1, pt: 3, pb: 7 }}>
-          <GridLayout
-            className="layout"
-            layout={layout}
-            cols={12}
-            rowHeight={120}
-            width={gridWidth}
-            draggableHandle=".drag-handle"
-            onLayoutChange={(newLayout) => setLayout(newLayout)}
-            isResizable
-            isDraggable
-            useCSSTransforms
+          <Button
+            variant={'contained'}
+            onClick={dashboard ? () => setSaveConformation(true) : handleSaveDashboard}
           >
-            {dashboardReports.map((report) => {
-              // Find matching layout item
-              const gridItem = layout.find((l) => l.i === report.id.toString());
-              if (!gridItem) return null; // Ensure valid data
+            Save Dashboard
+          </Button>
+        </div>
 
-              return (
-                <Box
-                  key={report.id}
-                  data-grid={{
-                    i: report.id.toString(),
-                    x: gridItem.x,
-                    y: gridItem.y,
-                    w: gridItem.w,
-                    h: gridItem.h,
-                  }}
-                  sx={{
-                    bgcolor: 'background.paper',
-                    borderRadius: 2,
-                    boxShadow: 1,
-                    position: 'relative',
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  {/* Drag handle */}
-                  <Typography variant="h6" gutterBottom className="drag-handle" sx={{ cursor: 'grab' }}>
-                    {report.question}
-                  </Typography>
+        <Box sx={{ flex: 1, borderRadius: 2, display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ flex: 1, width: '100%', overflowY: 'auto', pr: 1, pt: 3, pb: 7 }}>
+            <GridLayout
+              className="layout"
+              layout={layout}
+              cols={12}
+              rowHeight={120}
+              width={gridWidth}
+              draggableHandle=".drag-handle"
+              onLayoutChange={(newLayout) => setLayout(newLayout)}
+              isResizable
+              isDraggable
+              useCSSTransforms
+            >
+              {dashboardReports.map((report) => {
+                // Find matching layout item
+                const gridItem = layout.find((l) => l.i === report.id.toString());
+                if (!gridItem) return null; // Ensure valid data
 
-                  {/* Chart Component */}
-                  <Chart colData={report.values} defaultTab={report.type} type={report.type} />
-                </Box>
-              );
-            })}
-          </GridLayout>
+                return (
+                  <Box
+                    key={report.id}
+                    data-grid={{
+                      i: report.id.toString(),
+                      x: gridItem.x,
+                      y: gridItem.y,
+                      w: gridItem.w,
+                      h: gridItem.h,
+                    }}
+                    sx={{
+                      bgcolor: 'background.paper',
+                      borderRadius: 2,
+                      boxShadow: 1,
+                      position: 'relative',
+                      p: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    {/* Drag handle */}
+                    <Typography variant="h6" gutterBottom className="drag-handle" sx={{ cursor: 'grab' }}>
+                      {report.question}
+                    </Typography>
+
+                    {/* Chart Component */}
+                    <Chart colData={report.values} defaultTab={report.type} type={report.type} />
+                  </Box>
+                );
+              })}
+            </GridLayout>
+          </Box>
         </Box>
-      </Box>
-    </div>
+      </div>
+    </>
   );
 };
