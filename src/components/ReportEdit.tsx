@@ -139,7 +139,7 @@ export const ReportEdit = ({
                   <strong>Label</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Value</strong>
+                  <strong>Frequency</strong>
                 </TableCell>
                 <TableCell align="center">
                   <strong>Actions</strong>
