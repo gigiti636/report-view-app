@@ -91,6 +91,10 @@ export const ReportsList = ({
                   divider
                   key={report.id}
                   sx={{
+                    ...(isPreviewed && {
+                      border: `2px solid ${theme.palette.primary.main}`,
+                      borderRadius: 1,
+                    }),
                     bgcolor: isPreviewed ? theme.palette.action.selected : 'inherit', // Highlight previewed item
                     fontWeight: isPreviewed ? 'bold' : 'normal',
                     transition: 'background 0.2s ease-in-out',

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { ReportEdit } from '@/components';
 import { useReportStore } from '@/lib/reports.store.ts';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Theme } from '@mui/material/styles';
 
 interface DashBoardPromptProps {
   hasReports: boolean;
@@ -63,17 +64,22 @@ export const DashBoardPrompt: React.FC<DashBoardPromptProps> = ({
           {hasReports && (
             <>
               <Typography variant="h5" color="info.main">
-                And create a Dashboard!
+                Create a Dashboard!
               </Typography>
             </>
           )}
 
-          <div>
+          <Box
+            display={'flex'}
+            mt={3}
+            color={(theme: Theme) =>
+              theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.info.main
+            }
+          >
             <Button
               variant="text"
-              color="primary"
               onClick={handleRedirect}
-              sx={{ textDecoration: 'underline!important' }}
+              sx={{ textDecoration: 'underline!important', color: 'inherit' }}
             >
               Insert Reports
             </Button>
@@ -84,11 +90,11 @@ export const DashBoardPrompt: React.FC<DashBoardPromptProps> = ({
               variant="text"
               color="primary"
               onClick={() => setIsCreateReport(true)}
-              sx={{ textDecoration: 'underline!important' }}
+              sx={{ textDecoration: 'underline!important', color: 'inherit' }}
             >
               Create a report
             </Button>
-          </div>
+          </Box>
         </Box>
       )}
     </Paper>
