@@ -17,7 +17,7 @@ export const MyDashboard = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false); // New state for loading
 
-  const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
+  const { toPDF, targetRef } = usePDF({ filename: 'reports-export.pdf' });
 
   if (!dashboard) {
     return (
@@ -42,9 +42,9 @@ export const MyDashboard = () => {
     setShowShareDashboard(false);
   };
 
-  const generatePDF = async () => {
+  const generatePDF = () => {
     setIsGeneratingPDF(true); // Start loading
-    await toPDF();
+    toPDF();
     setIsGeneratingPDF(false); // Stop loading
   };
 

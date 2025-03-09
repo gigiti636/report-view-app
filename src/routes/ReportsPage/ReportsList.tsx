@@ -6,6 +6,7 @@ import { StoredReport } from '@/lib/types';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@/routes/AppRouter.tsx';
+import { useReportStore } from '@/lib/reports.store.ts';
 
 interface ReportsListProps {
   reportIdFocus: string | null; // Updated type to match ID format
@@ -41,8 +42,22 @@ export const ReportsList = ({
   };
 
   const navigate = useNavigate();
+  const { addDashboard } = useReportStore();
   const handleSentToDashboard = () => {
     navigate(routes.dashboard);
+
+    const initialLayout = reports.map((report, index) => ({
+      i: report.id.toString(),
+      x: (index % 2) * 6,
+      y: Math.floor(index / 2) * 2,
+      w: 6,
+      h: 3,
+    }));
+
+    addDashboard({
+      layout: initialLayout,
+      reports: reports.filter((report) => selectedReports.includes(report.id)),
+    });
   };
 
   return (

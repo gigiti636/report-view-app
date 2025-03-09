@@ -46,7 +46,7 @@ export function renameKeyPreserveOrder<T extends Record<string, never>>(
   const newObj = {} as T;
   Object.keys(obj).forEach((key) => {
     if (key === oldKey) {
-      (newObj as any)[newKey] = obj[oldKey];
+      (newObj as Record<string, unknown>)[newKey] = obj[oldKey];
     } else {
       (newObj[key] as T) = obj[key];
     }
