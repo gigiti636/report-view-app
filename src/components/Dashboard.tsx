@@ -84,7 +84,7 @@ export const Dashboard = ({ dashboard, isEdit, onNewLayout }: DashboardProp) => 
                     >
                       <>
                         {/* Drag handle */}
-                        <Typography variant="h6" gutterBottom>
+                        <Typography variant="h6" gutterBottom color={'text.primary'}>
                           {report.question}
                         </Typography>
 

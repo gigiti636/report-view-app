@@ -1,11 +1,12 @@
 import { useReportStore } from '@/lib/reports.store.ts';
-import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, TextField, Typography, CircularProgress } from '@mui/material';
 import { Dashboard, Modal } from '@/components';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useRef, useState } from 'react';
 import { encodeData } from '@/lib/utils.ts';
 import CloseIcon from '@mui/icons-material/Close';
+import { usePDF } from 'react-to-pdf';
 
 export const MyDashboard = () => {
   const { clearDashboard, dashboard, updateDashboard } = useReportStore();
@@ -13,8 +14,10 @@ export const MyDashboard = () => {
   const [showDeleteDashboard, setShowDeleteDashboard] = useState(false);
   const [showShareModal, setShowShareDashboard] = useState(false);
   const textAreaRef = useRef(null);
-
   const [isEdit, setIsEdit] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false); // New state for loading
+
+  const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' });
 
   if (!dashboard) {
     return (
@@ -37,6 +40,12 @@ export const MyDashboard = () => {
       .then(() => console.log('Dashboard link copied successfully!'))
       .catch((err) => console.error('Failed to copy link:', err));
     setShowShareDashboard(false);
+  };
+
+  const generatePDF = async () => {
+    setIsGeneratingPDF(true); // Start loading
+    await toPDF();
+    setIsGeneratingPDF(false); // Stop loading
   };
 
   return (
@@ -83,6 +92,14 @@ export const MyDashboard = () => {
               <Button variant={'outlined'} color={'error'} onClick={() => setShowDeleteDashboard(true)}>
                 Delete Dashboard
               </Button>
+              <Button
+                variant={'outlined'}
+                color={'warning'}
+                onClick={generatePDF}
+                disabled={isGeneratingPDF} // Disable button while loading
+              >
+                {isGeneratingPDF ? <CircularProgress size={20} color="inherit" /> : 'Download PDF'}
+              </Button>
               <Button variant={'outlined'} color={'info'} onClick={handleShareButtonClick}>
                 Share Dashboard
               </Button>
@@ -99,11 +116,15 @@ export const MyDashboard = () => {
           )}
         </Box>
 
-        <Dashboard
-          dashboard={dashboard}
-          isEdit={isEdit}
-          onNewLayout={(layout) => updateDashboard({ layout })}
-        />
+        <div ref={targetRef}>
+          <Box bgcolor={'background.default'}>
+            <Dashboard
+              dashboard={dashboard}
+              isEdit={isEdit}
+              onNewLayout={(layout) => updateDashboard({ layout })}
+            />
+          </Box>
+        </div>
       </Box>
     </>
   );
