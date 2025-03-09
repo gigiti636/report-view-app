@@ -11,6 +11,7 @@ export default function ChartControl({
   colData,
   type,
   id,
+  delay,
   handleGroupID,
   handleUpdateChartType,
 }: ControlChartProps) {
@@ -19,7 +20,7 @@ export default function ChartControl({
 
   return (
     <Box>
-      <Chart colData={colData} type={type} handleUpdateChartType={handleUpdateChartType} />
+      <Chart colData={colData} type={type} handleUpdateChartType={handleUpdateChartType} delay={delay} />
 
       {/* Group Data Button (Shown only if grouping is possible) */}
       {data_can_be_grouped && (

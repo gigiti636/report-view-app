@@ -3,7 +3,7 @@ import { Chart } from '@/components';
 import GridLayout, { type Layout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import type { DashboardType } from '@/lib/types.ts';
 
 interface DashboardProp {
@@ -16,7 +16,7 @@ export const Dashboard = ({ dashboard, isEdit, onNewLayout }: DashboardProp) => 
   const [gridWidth, setGridWidth] = useState(1200);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updateWidth = () => {
       if (containerRef.current) {
         setGridWidth(containerRef.current.offsetWidth);
@@ -51,12 +51,14 @@ export const Dashboard = ({ dashboard, isEdit, onNewLayout }: DashboardProp) => 
                 onLayoutChange={isEdit ? handleNewLayout : undefined}
                 isResizable={!!isEdit}
                 isDraggable={!!isEdit}
-                useCSSTransforms
+                useCSSTransforms={false}
+                resizeHandles={['se', 'sw', 'w', 'e', 's']}
               >
-                {reports.map((report) => {
-                  // Find matching layout item
+                {reports.map((report, index) => {
                   const gridItem = layout.find((l) => l.i === report.id.toString());
-                  if (!gridItem) return null; // Ensure valid data
+                  if (!gridItem) return null;
+
+                  const delay = index > 5 ? 1200 : Math.floor(index) * 400;
 
                   return (
                     <Box
@@ -80,13 +82,19 @@ export const Dashboard = ({ dashboard, isEdit, onNewLayout }: DashboardProp) => 
                       }}
                       className={isEdit ? 'drag-handle' : ''}
                     >
-                      {/* Drag handle */}
-                      <Typography variant="h6" gutterBottom>
-                        {report.question}
-                      </Typography>
+                      <>
+                        {/* Drag handle */}
+                        <Typography variant="h6" gutterBottom>
+                          {report.question}
+                        </Typography>
 
-                      {/* Chart Component */}
-                      <Chart colData={report.values} defaultTab={report.type} type={report.type} />
+                        <Chart
+                          colData={report.values}
+                          defaultTab={report.type}
+                          type={report.type}
+                          delay={delay}
+                        />
+                      </>
                     </Box>
                   );
                 })}

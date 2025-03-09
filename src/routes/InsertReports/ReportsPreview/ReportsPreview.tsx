@@ -15,7 +15,7 @@ import { darken } from '@mui/material/styles';
 import { transformAndSplitDict } from '@/lib/utils.ts';
 import { EditableText, Modal } from '@/components';
 
-import Chart from './ChartControl.tsx';
+import ChartControl from './ChartControl.tsx';
 import { ChartType, ReportColumn, ReportData, StoredReport } from '@/lib/types.ts';
 import { nanoid } from 'nanoid';
 import { useReportStore } from '@/lib/reports.store.ts';
@@ -124,45 +124,51 @@ export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) =
           </Button>
         </Box>
 
-        {reportData.map((col, index) => (
-          <Accordion
-            key={index + '-' + col.values.question}
-            sx={{ mb: 5, borderRadius: '12px' }}
-            expanded={col.open}
-          >
-            <AccordionSummary
-              onClick={() => toggleExpandedReport(col.id)}
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls={`report-column-${index}`}
-              id={`report-column-${index}`}
-              sx={{ background: (theme) => darken(theme.palette.background.paper, 0.028) }}
+        {reportData.map((col, index) => {
+          const delay = index > 5 ? 1200 : Math.floor(index) * 400;
+
+          return (
+            <Accordion
+              key={index + '-' + col.values.question}
+              sx={{ mb: 5, borderRadius: '12px' }}
+              expanded={col.open}
             >
-              <Box display={'flex'} alignItems={'center'}>
-                <EditableText text={col.question} onSave={(text) => handleEditSave(col.id, text)} />
-                <IconButton
-                  title={'Discard question'}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setReportIdsToDelete(col.id);
-                  }}
-                  sx={{ mx: 1 }}
-                >
-                  <DeleteForeverIcon color={'error'} />
-                </IconButton>
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>{Object.keys(col.values).every((k) => k.includes(',')) ? 'test' : ''}</Typography>
-              <Chart
-                id={col.id}
-                colData={col.values}
-                handleGroupID={handleGroupID}
-                type={col.type}
-                handleUpdateChartType={(newType) => handleChartType(col.id, newType)}
-              />
-            </AccordionDetails>
-          </Accordion>
-        ))}
+              <AccordionSummary
+                onClick={() => toggleExpandedReport(col.id)}
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls={`report-column-${index}`}
+                id={`report-column-${index}`}
+                sx={{ background: (theme) => darken(theme.palette.background.paper, 0.028) }}
+              >
+                <Box display={'flex'} alignItems={'center'}>
+                  <EditableText text={col.question} onSave={(text) => handleEditSave(col.id, text)} />
+                  <IconButton
+                    title={'Discard question'}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setReportIdsToDelete(col.id);
+                    }}
+                    sx={{ mx: 1 }}
+                  >
+                    <DeleteForeverIcon color={'error'} />
+                  </IconButton>
+                </Box>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>{Object.keys(col.values).every((k) => k.includes(',')) ? 'test' : ''}</Typography>
+
+                <ChartControl
+                  id={col.id}
+                  colData={col.values}
+                  handleGroupID={handleGroupID}
+                  type={col.type}
+                  handleUpdateChartType={(newType) => handleChartType(col.id, newType)}
+                  delay={delay}
+                />
+              </AccordionDetails>
+            </Accordion>
+          );
+        })}
       </Box>
 
       <Modal
