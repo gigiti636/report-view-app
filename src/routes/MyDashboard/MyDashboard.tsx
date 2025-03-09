@@ -1,17 +1,20 @@
 import { useReportStore } from '@/lib/reports.store.ts';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import { Dashboard, Modal } from '@/components';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useRef, useState } from 'react';
 import { encodeData } from '@/lib/utils.ts';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const MyDashboard = () => {
-  const { clearDashboard, dashboard } = useReportStore();
+  const { clearDashboard, dashboard, updateDashboard } = useReportStore();
 
   const [showDeleteDashboard, setShowDeleteDashboard] = useState(false);
   const [showShareModal, setShowShareDashboard] = useState(false);
   const textAreaRef = useRef(null);
+
+  const [isEdit, setIsEdit] = useState(false);
 
   if (!dashboard) {
     return (
@@ -75,14 +78,32 @@ export const MyDashboard = () => {
 
       <Box>
         <Box mt={2} mx={2} display={'flex'} justifyContent={'end'} gap={2}>
-          <Button variant={'outlined'} color={'error'} onClick={() => setShowDeleteDashboard(true)}>
-            Delete Dashboard
-          </Button>
-          <Button variant={'contained'} color={'info'} onClick={handleShareButtonClick}>
-            Share Dashboard
-          </Button>
+          {!isEdit && (
+            <>
+              <Button variant={'outlined'} color={'error'} onClick={() => setShowDeleteDashboard(true)}>
+                Delete Dashboard
+              </Button>
+              <Button variant={'outlined'} color={'info'} onClick={handleShareButtonClick}>
+                Share Dashboard
+              </Button>
+              <Button variant="contained" color="info" onClick={() => setIsEdit(true)}>
+                Update Dashboard
+              </Button>
+            </>
+          )}
+
+          {isEdit && (
+            <IconButton onClick={() => setIsEdit(false)} color="info">
+              <CloseIcon />
+            </IconButton>
+          )}
         </Box>
-        <Dashboard dashboard={dashboard} />
+
+        <Dashboard
+          dashboard={dashboard}
+          isEdit={isEdit}
+          onNewLayout={(layout) => updateDashboard({ layout })}
+        />
       </Box>
     </>
   );

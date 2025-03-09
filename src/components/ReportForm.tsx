@@ -22,7 +22,7 @@ import { ChartType, StoredReport } from '@/lib/types.ts';
 import { nanoid } from 'nanoid';
 import { renameKeyPreserveOrder } from '@/lib/utils.ts';
 
-export const ReportEdit = ({
+export const ReportForm = ({
   data = { id: nanoid(), question: '', values: { 'New Label 1': 5, 'New Label 2': 5 }, type: ChartType.Bar },
   handleSave,
   handleCancel,

@@ -2,17 +2,17 @@ import { Box, Typography, Button, Paper, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@/routes/AppRouter.tsx';
 import { useState } from 'react';
-import { ReportEdit } from '@/components';
+import { ReportForm } from '@/components';
 import { useReportStore } from '@/lib/reports.store.ts';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { Theme } from '@mui/material/styles';
+import type { Theme } from '@mui/material/styles';
 
 interface DashBoardPromptProps {
   hasReports: boolean;
   handleCreated: (_id: string) => void;
 }
 
-export const DashBoardPrompt: React.FC<DashBoardPromptProps> = ({
+export const PromptCreateReport: React.FC<DashBoardPromptProps> = ({
   hasReports,
   handleCreated,
 }: DashBoardPromptProps) => {
@@ -46,7 +46,7 @@ export const DashBoardPrompt: React.FC<DashBoardPromptProps> = ({
             Create Report
           </Typography>
 
-          <ReportEdit
+          <ReportForm
             handleSave={(_data) => {
               addReports([_data]);
               handleCreated(_data.id);

@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { Chart } from '@/components';
-import GridLayout from 'react-grid-layout';
+import GridLayout, { type Layout } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useEffect, useRef, useState } from 'react';
@@ -8,9 +8,11 @@ import type { DashboardType } from '@/lib/types.ts';
 
 interface DashboardProp {
   dashboard: DashboardType;
+  isEdit?: boolean;
+  onNewLayout?: (_layout: Layout[]) => void;
 }
 
-export const Dashboard = ({ dashboard }: DashboardProp) => {
+export const Dashboard = ({ dashboard, isEdit, onNewLayout }: DashboardProp) => {
   const [gridWidth, setGridWidth] = useState(1200);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -25,59 +27,73 @@ export const Dashboard = ({ dashboard }: DashboardProp) => {
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  const { layout, reports } = dashboard;
+  const { layout: layoutInitState, reports } = dashboard;
+  const [layout, setLayout] = useState(layoutInitState);
+
+  const handleNewLayout = (newLayout: Layout[]) => {
+    if (isEdit && onNewLayout) onNewLayout(newLayout);
+    setLayout(newLayout);
+  };
 
   return (
     <>
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
-        <Box sx={{ flex: 1, borderRadius: 2, display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ flex: 1, width: '100%', overflowY: 'auto', pr: 1, pt: 3, pb: 7 }}>
-            <GridLayout
-              className="layout"
-              layout={layout}
-              cols={12}
-              rowHeight={120}
-              width={gridWidth}
-              isResizable={false}
-              isDraggable={false}
-              useCSSTransforms
-            >
-              {reports.map((rep) => {
-                // Find matching layout item
-                const gridItem = layout.find((l) => l.i === rep.id.toString());
-                if (!gridItem) return null; // Ensure valid data
+        {containerRef && (
+          <Box sx={{ flex: 1, borderRadius: 2, display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ flex: 1, width: '100%', overflowY: 'auto', pr: 1, pt: 3, pb: 7 }}>
+              <GridLayout
+                className="layout"
+                layout={layout}
+                cols={12}
+                rowHeight={120}
+                width={gridWidth}
+                draggableHandle=".drag-handle"
+                onLayoutChange={isEdit ? handleNewLayout : undefined}
+                isResizable={!!isEdit}
+                isDraggable={!!isEdit}
+                useCSSTransforms
+              >
+                {reports.map((report) => {
+                  // Find matching layout item
+                  const gridItem = layout.find((l) => l.i === report.id.toString());
+                  if (!gridItem) return null; // Ensure valid data
 
-                return (
-                  <Box
-                    key={rep.id}
-                    data-grid={{
-                      i: rep.id.toString(),
-                      x: gridItem.x,
-                      y: gridItem.y,
-                      w: gridItem.w,
-                      h: gridItem.h,
-                    }}
-                    sx={{
-                      bgcolor: 'background.paper',
-                      borderRadius: 2,
-                      boxShadow: 1,
-                      position: 'relative',
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <Typography variant="h6" gutterBottom>
-                      {rep.question}
-                    </Typography>
+                  return (
+                    <Box
+                      key={report.id}
+                      data-grid={{
+                        i: report.id.toString(),
+                        x: gridItem.x,
+                        y: gridItem.y,
+                        w: gridItem.w,
+                        h: gridItem.h,
+                      }}
+                      sx={{
+                        bgcolor: 'background.paper',
+                        borderRadius: 2,
+                        boxShadow: 1,
+                        position: 'relative',
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        cursor: isEdit ? 'grab' : 'default',
+                      }}
+                      className={isEdit ? 'drag-handle' : ''}
+                    >
+                      {/* Drag handle */}
+                      <Typography variant="h6" gutterBottom>
+                        {report.question}
+                      </Typography>
 
-                    <Chart colData={rep.values} defaultTab={rep.type} type={rep.type} />
-                  </Box>
-                );
-              })}
-            </GridLayout>
+                      {/* Chart Component */}
+                      <Chart colData={report.values} defaultTab={report.type} type={report.type} />
+                    </Box>
+                  );
+                })}
+              </GridLayout>
+            </Box>
           </Box>
-        </Box>
+        )}
       </div>
     </>
   );

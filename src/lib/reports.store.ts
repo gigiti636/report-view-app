@@ -11,6 +11,7 @@ interface ReportStore {
   updateReport: (_id: string, _updatedReport: Partial<StoredReport>) => void;
   clearReports: () => void;
   addDashboard: (_dashboard: DashboardType) => void;
+  updateDashboard: (_updatedDashboard: Partial<DashboardType>) => void;
   clearDashboard: () => void;
 }
 
@@ -62,6 +63,15 @@ export const useReportStore = create<ReportStore>()(
             }),
             false,
             'ADD_DASHBOARD',
+          ),
+
+        updateDashboard: (_updatedDashboard) =>
+          set(
+            (state) => ({
+              dashboard: state.dashboard ? { ...state.dashboard, ..._updatedDashboard } : null,
+            }),
+            false,
+            'UPDATE_DASHBOARD',
           ),
 
         clearDashboard: () =>

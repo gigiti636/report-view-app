@@ -4,9 +4,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { StoredReport } from '@/lib/types';
 import { useTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '@/routes/AppRouter.tsx';
 
 interface ReportsListProps {
-  previewReportId: string | null; // Updated type to match ID format
+  reportIdFocus: string | null; // Updated type to match ID format
   reports: StoredReport[];
   selectedReports: string[];
   onSelect: (_id: string) => void;
@@ -15,11 +17,10 @@ interface ReportsListProps {
   onView: (_id: string) => void;
   onDelete: (_id: string) => void;
   handleDeleteSelected: () => void;
-  handleSentToDashboard: () => void;
 }
 
 export const ReportsList = ({
-  previewReportId,
+  reportIdFocus,
   reports,
   selectedReports,
   onSelect,
@@ -28,7 +29,6 @@ export const ReportsList = ({
   onView,
   onDelete,
   handleDeleteSelected,
-  handleSentToDashboard,
 }: ReportsListProps) => {
   const theme = useTheme();
 
@@ -38,6 +38,11 @@ export const ReportsList = ({
     } else {
       onSelectAll();
     }
+  };
+
+  const navigate = useNavigate();
+  const handleSentToDashboard = () => {
+    navigate(routes.dashboard);
   };
 
   return (
@@ -83,7 +88,7 @@ export const ReportsList = ({
         ) : (
           <List>
             {reports.map((report) => {
-              const isPreviewed = report.id === previewReportId; // Check if the report is being previewed
+              const isPreviewed = report.id === reportIdFocus; // Check if the report is being previewed
 
               //report.isNew
               return (

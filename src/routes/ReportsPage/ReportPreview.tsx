@@ -1,4 +1,4 @@
-import { Chart, ReportEdit } from '@/components';
+import { Chart, ReportForm } from '@/components';
 import { useReportStore } from '@/lib/reports.store.ts';
 import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -79,7 +79,7 @@ export const ReportPreview = ({ reportIdToView, handleBackButtonClick }: ReportP
         </>
       ) : (
         <>
-          <ReportEdit
+          <ReportForm
             data={report}
             handleSave={(updatedReport) => {
               setEditReportMode(false);

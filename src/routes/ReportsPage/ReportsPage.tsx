@@ -4,16 +4,13 @@ import { useState } from 'react';
 import { Modal } from '@/components';
 import { ReportPreview } from '@/routes/ReportsPage/ReportPreview.tsx';
 import { ReportsList } from './ReportsList.tsx';
-import { DashBoardPrompt } from '@/routes/ReportsPage/DashboardPrompt.tsx';
-import { DashBoardGridArea } from './DashBoardGridArea.tsx';
+import { PromptCreateReport } from '@/routes/ReportsPage/PromptCreateReport.tsx';
 
 export const ReportsPage = () => {
   const { reports, removeReport } = useReportStore();
   const [reportIdsToDelete, setReportIdsToDelete] = useState<string[]>([]);
   const [reportIdToView, setReportIdToView] = useState<string | null>(null);
   const [selectedReports, setSelectedReports] = useState<string[]>([]);
-
-  const [showDraftDashboard, setShowDraftDashboard] = useState(false);
 
   const handleCloseReportPreview = () => {
     setReportIdToView(null);
@@ -34,18 +31,13 @@ export const ReportsPage = () => {
     setReportIdsToDelete([]);
   };
 
-  const handleSentToDashboard = () => {
-    setShowDraftDashboard(true);
-  };
-  const reportToAddToDashboard = reports.filter((report) => selectedReports.includes(report.id));
-
   return (
     <>
       <Box sx={{ height: 'calc(100vh - 68px)', display: 'flex', bgcolor: 'background.default' }}>
-        {!showDraftDashboard && reports.length > 0 && (
+        {reports.length > 0 && (
           <Paper sx={{ width: '30%', height: '100%', display: 'flex', flexDirection: 'column' }}>
             <ReportsList
-              previewReportId={reportIdToView}
+              reportIdFocus={reportIdToView}
               reports={reports}
               selectedReports={selectedReports}
               onClearSelection={() => setSelectedReports([])}
@@ -54,7 +46,6 @@ export const ReportsPage = () => {
               onView={(_id) => (_id === reportIdToView ? setReportIdToView(null) : setReportIdToView(_id))}
               onDelete={(id) => setReportIdsToDelete([id])}
               handleDeleteSelected={() => setReportIdsToDelete(selectedReports)}
-              handleSentToDashboard={handleSentToDashboard}
             />
           </Paper>
         )}
@@ -72,19 +63,10 @@ export const ReportsPage = () => {
             position: 'relative',
           }}
         >
-          {showDraftDashboard && (
-            <DashBoardGridArea
-              dashboardReports={reportToAddToDashboard}
-              handleBackToReports={() => setShowDraftDashboard(false)}
-            />
-          )}
-
-          {!showDraftDashboard && reportIdToView && (
+          {reportIdToView ? (
             <ReportPreview reportIdToView={reportIdToView} handleBackButtonClick={handleCloseReportPreview} />
-          )}
-
-          {!showDraftDashboard && !reportIdToView && (
-            <DashBoardPrompt hasReports={reports.length > 0} handleCreated={setReportIdToView} />
+          ) : (
+            <PromptCreateReport hasReports={reports.length > 0} handleCreated={setReportIdToView} />
           )}
         </Box>
       </Box>
