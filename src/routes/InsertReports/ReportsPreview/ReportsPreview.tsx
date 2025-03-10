@@ -27,20 +27,51 @@ interface ReportsProps {
   handleClear: () => void;
 }
 
-const AllChartTypesArray = Object.values(ChartType);
+function getOptimizedType(values: number[]): ChartType {
+  if (!values || values.length === 0) return ChartType.Bar; // Default case
+
+  const isNumeric = values.every((v) => typeof v === 'number');
+
+  if (!isNumeric) {
+    return ChartType.Bar;
+  }
+
+  switch (values.length) {
+    case 1:
+      return ChartType.Line;
+    case 2:
+    case 3:
+      return ChartType.Pie;
+    case 4:
+      return ChartType.Bar;
+    case 5:
+      return ChartType.Pie;
+
+    case 6:
+    case 7:
+    case 8:
+      return ChartType.Donut;
+
+    case 12:
+      return ChartType.Line;
+
+    default:
+      return values.length % 2 === 1 ? ChartType.Bar : ChartType.Line;
+  }
+}
+
+export function initializeReportData(transformedData: ReportData): ReportColumn[] {
+  return Object.values(transformedData).map((col, index) => ({
+    id: index + 1,
+    question: col.question,
+    values: transformAndSplitDict(col.values),
+    open: true,
+    type: getOptimizedType(Object.values(transformAndSplitDict(col.values))),
+  }));
+}
 
 export const ReportsPreview = ({ transformedData, handleClear }: ReportsProps) => {
-  const [reportData, setReportData] = useState<ReportColumn[]>(
-    Object.values(transformedData).map((col, index) => {
-      return {
-        id: index + 1,
-        question: col.question,
-        values: col.values,
-        open: true,
-        type: AllChartTypesArray[index % AllChartTypesArray.length],
-      };
-    }),
-  );
+  const [reportData, setReportData] = useState<ReportColumn[]>(initializeReportData(transformedData));
 
   const [reportIdToDelete, setReportIdsToDelete] = useState<number | null>(null);
 

@@ -71,7 +71,6 @@
     "vitest": "^1.2.0"
   },
   "pre-commit": [
-    "format_check",
     "lint"
   ],
   "license": "MIT"

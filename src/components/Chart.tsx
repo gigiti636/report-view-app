@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { Tabs, Tab, Box, CircularProgress } from '@mui/material';
+import { Tabs, Tab, Box, CircularProgress, Typography } from '@mui/material';
 import { ChartType } from '@/lib/types.ts';
 
 export interface ChartProps {
@@ -27,8 +27,10 @@ export default function Chart({ colData, defaultTab, type, handleUpdateChartType
   const labels = Object.keys(colData);
   const freq = Object.values(colData);
 
+  const chartHeight = 300;
+
   return (
-    <Box sx={{ position: 'relative', minHeight: 300 }}>
+    <Box sx={{ position: 'relative', minHeight: chartHeight }}>
       {!isLoaded ? (
         // ⬇️ Show a loading spinner during the delay
         <Box
@@ -63,56 +65,101 @@ export default function Chart({ colData, defaultTab, type, handleUpdateChartType
               <Tab label="Line Chart" value="line" />
             </Tabs>
           )}
-
           {/* Conditional rendering of charts based on active tab */}
           {activeTab === 'bar' && (
             <BarChart
-              height={300}
+              height={chartHeight}
               series={[{ data: freq, id: 'uvId', stack: 'total' }]}
               xAxis={[{ data: labels, scaleType: 'band' }]}
             />
           )}
 
           {activeTab === 'pie' && (
-            <PieChart
-              height={300}
-              series={[
-                {
-                  data: labels.map((label, index) => ({
-                    id: index,
-                    value: freq[index],
-                    label,
-                  })),
-                },
-              ]}
-            />
+            <>
+              <PieChart
+                height={chartHeight}
+                series={[
+                  {
+                    data: labels.map((label, index) => ({
+                      id: index,
+                      value: freq[index],
+                      label,
+                    })),
+                  },
+                ]}
+                slotProps={{
+                  legend: {
+                    direction: 'column',
+                    labelStyle: { fontSize: '10px' },
+                  },
+                }}
+              />
+              {/*  <CustomTextLegend labels={labels} />*/}
+            </>
           )}
-
           {activeTab === 'donut' && (
-            <PieChart
-              height={300}
-              series={[
-                {
-                  data: labels.map((label, index) => ({
-                    id: index,
-                    value: freq[index],
-                    label,
-                  })),
-                  innerRadius: 70, // Makes it a donut chart
-                },
-              ]}
-            />
+            <>
+              <PieChart
+                height={chartHeight}
+                series={[
+                  {
+                    data: labels.map((label, index) => ({
+                      id: index,
+                      value: freq[index],
+                      label,
+                    })),
+                    innerRadius: 70, // Makes it a donut chart
+                  },
+                ]}
+                slotProps={{
+                  legend: { direction: 'column', position: { vertical: 'middle', horizontal: 'right' } },
+                }}
+              />
+              {/*            <CustomTextLegend labels={labels} />*/}
+            </>
           )}
-
           {activeTab === 'line' && (
             <LineChart
-              height={300}
+              height={chartHeight}
               series={[{ data: freq, id: 'lineData' }]}
               xAxis={[{ data: labels, scaleType: 'point' }]}
             />
           )}
         </>
       )}
+    </Box>
+  );
+}
+
+interface ChartLegendProps {
+  labels: string[];
+}
+
+console.log(CustomTextLegend);
+function CustomTextLegend({ labels }: ChartLegendProps) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        gap: 2,
+        mt: 2,
+      }}
+    >
+      {labels.map((label, index) => (
+        <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box
+            sx={{
+              width: 12,
+              height: 12,
+              backgroundColor: `var(--mui-color-${index})`,
+              borderRadius: '50%',
+            }}
+          />
+          <Typography variant="caption">{label}</Typography>
+        </Box>
+      ))}
     </Box>
   );
 }

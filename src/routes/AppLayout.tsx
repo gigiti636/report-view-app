@@ -1,20 +1,22 @@
 import ThemeProvider from '@/theme/ThemeProvider.tsx';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Fab, IconButton, Toolbar, Typography, Zoom } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ThemeContext from '@/theme/context.ts';
 import { routes } from '@/routes/AppRouter.tsx';
 import { useReportStore } from '@/lib/reports.store.ts';
 import { Assessment, Dashboard } from '@mui/icons-material';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 export const AppLayout = () => {
   return (
     <ThemeProvider>
       <Header />
       <Outlet />
+      <ScrollToTop />
     </ThemeProvider>
   );
 };
@@ -79,5 +81,35 @@ const Header = () => {
         </IconButton>
       </Toolbar>
     </AppBar>
+  );
+};
+
+const ScrollToTop = () => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      setVisible(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <Zoom in={visible}>
+      <Fab
+        color="primary"
+        size="small"
+        onClick={scrollToTop}
+        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+      >
+        <KeyboardArrowUpIcon />
+      </Fab>
+    </Zoom>
   );
 };

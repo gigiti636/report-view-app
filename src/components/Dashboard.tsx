@@ -45,7 +45,7 @@ export const Dashboard = ({ dashboard, isEdit, onNewLayout }: DashboardProp) => 
                 className="layout"
                 layout={layout}
                 cols={12}
-                rowHeight={120}
+                rowHeight={150}
                 width={gridWidth}
                 draggableHandle=".drag-handle"
                 onLayoutChange={isEdit ? handleNewLayout : undefined}
@@ -84,7 +84,14 @@ export const Dashboard = ({ dashboard, isEdit, onNewLayout }: DashboardProp) => 
                     >
                       <>
                         {/* Drag handle */}
-                        <Typography variant="h6" gutterBottom color={'text.primary'}>
+                        <Typography
+                          variant="h6"
+                          gutterBottom
+                          color={'text.primary'}
+                          mb={6}
+                          mt={2}
+                          fontSize={'medium'}
+                        >
                           {report.question}
                         </Typography>
 

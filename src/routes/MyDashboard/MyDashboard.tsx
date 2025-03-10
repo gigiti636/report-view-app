@@ -1,11 +1,11 @@
 import { useReportStore } from '@/lib/reports.store.ts';
-import { Box, Button, IconButton, TextField, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, TextField, Typography, CircularProgress } from '@mui/material';
 import { Dashboard, Modal } from '@/components';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useRef, useState } from 'react';
 import { encodeData } from '@/lib/utils.ts';
-import CloseIcon from '@mui/icons-material/Close';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import { usePDF } from 'react-to-pdf';
 
 export const MyDashboard = () => {
@@ -103,16 +103,28 @@ export const MyDashboard = () => {
               <Button variant={'outlined'} color={'info'} onClick={handleShareButtonClick}>
                 Share Dashboard
               </Button>
-              <Button variant="contained" color="info" onClick={() => setIsEdit(true)}>
-                Update Dashboard
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setIsEdit(true)}
+                sx={{ display: 'flex', gap: '8px' }}
+              >
+                <AspectRatioIcon />
+                Layout unlock
               </Button>
             </>
           )}
 
           {isEdit && (
-            <IconButton onClick={() => setIsEdit(false)} color="info">
-              <CloseIcon />
-            </IconButton>
+            <Button
+              variant="outlined"
+              color="warning"
+              onClick={() => setIsEdit(false)}
+              sx={{ display: 'flex', gap: '8px' }}
+            >
+              <AspectRatioIcon />
+              Lock layout
+            </Button>
           )}
         </Box>
 

@@ -54,6 +54,10 @@ const getStyleOverrides = (mode: Mode = 'light'): Components<Omit<Theme, 'compon
           '&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner': {
             backgroundColor: scrollbarBackgroundColor,
           },
+          '& .react-resizable-handle::after': {
+            borderRight: `2px solid ${mode === 'dark' ? 'white' : 'black'}!important`,
+            borderBottom: `2px solid ${mode === 'dark' ? 'white' : 'black'}!important`,
+          },
         },
       },
     },
@@ -74,8 +78,8 @@ const getStyleOverrides = (mode: Mode = 'light'): Components<Omit<Theme, 'compon
         root: {
           textTransform: 'capitalize',
           borderRadius: '7px',
-          paddingRight: '30px;',
-          paddingLeft: '30px;',
+          paddingRight: '15px;',
+          paddingLeft: '15px;',
         },
       },
     },
