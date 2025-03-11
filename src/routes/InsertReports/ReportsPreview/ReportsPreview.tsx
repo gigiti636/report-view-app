@@ -38,23 +38,21 @@ function getOptimizedType(values: number[]): ChartType {
 
   switch (values.length) {
     case 1:
-      return ChartType.Line;
     case 2:
     case 3:
       return ChartType.Pie;
     case 4:
-      return ChartType.Bar;
     case 5:
-      return ChartType.Pie;
-
+      return ChartType.Donut;
     case 6:
     case 7:
     case 8:
-      return ChartType.Donut;
-
-    case 12:
+      return ChartType.Bar;
+    case 9:
+    case 10:
+    case 11:
       return ChartType.Line;
-
+    case 12:
     default:
       return values.length % 2 === 1 ? ChartType.Bar : ChartType.Line;
   }
